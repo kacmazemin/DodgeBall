@@ -3,7 +3,7 @@
 //
 
 #include "GameLayer.h"
-#include "ScreenUtils.h"
+#include "Utils/ScreenUtils.h"
 #include "Box2D/Box2D.h"
 
 #define SCALE_RATIO 32
@@ -67,7 +67,7 @@ bool GameLayer::init()
         body->SetTransform(b2Vec2(pos.x / SCALE_RATIO, pos.y / SCALE_RATIO), body->GetAngle());
 
         body2 = world->CreateBody(&bodyDef);
-        body2->SetGravityScale(2.5f);
+        body2->SetGravityScale(2);
         body2->SetTransform(b2Vec2(pos2.x / SCALE_RATIO, pos2.y / SCALE_RATIO), body->GetAngle());
 
         cocos2d::Vec2 size = cocos2d::Vec2(50, 50);

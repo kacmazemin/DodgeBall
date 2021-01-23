@@ -6,7 +6,7 @@
 #define _GAMELAYER_H
 
 #include "cocos2d.h"
-#include "GLES-Render.h"
+#include "Utils/GLES-Render.h"
 #include "Box2D/Box2D.h"
 
 
