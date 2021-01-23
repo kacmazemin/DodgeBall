@@ -52,12 +52,14 @@ list(APPEND GAME_SOURCE
      Classes/GLES-Render.cpp
      Classes/ScreenUtils.cpp
      Classes/GameLayer.cpp
+     Classes/MenuScene.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
      Classes/GLES-Render.h
      Classes/ScreenUtils.h
      Classes/GameLayer.h
+     Classes/MenuScene.h
      )
 
 if(ANDROID)
