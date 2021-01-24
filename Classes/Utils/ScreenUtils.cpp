@@ -74,3 +74,13 @@ Vec2 ScreenUtils::rightBottom()
     lazyInit();
     return Vec2(s_visibleRect.origin.x+s_visibleRect.size.width, s_visibleRect.origin.y);
 }
+
+void ScreenUtils::fitH(cocos2d::Node* node, float height)
+{
+    node->setScale(height / node->getContentSize().height);
+}
+
+void ScreenUtils::fitW(cocos2d::Node *node, float width)
+{
+    node->setScale(width / node->getContentSize().width);
+}
