@@ -2,8 +2,8 @@
 // Created by emin on 24.01.2021.
 //
 
-#ifndef PROJ_ANDROID_BALL_H
-#define PROJ_ANDROID_BALL_H
+#ifndef _BALL_H
+#define _BALL_H
 
 #include "../Physics/SpriteWithPhysics.h"
 #include "../Utils/ScreenUtils.h"
@@ -24,9 +24,9 @@ private:
 
     cocos2d::Vec2 startPos = cocos2d::Vec2::ZERO;
 
-    void createBall();
+    void createBall(const bool isPlayerBall);
 
 };
 
 
-#endif //PROJ_ANDROID_BALL_H
+#endif //_BALL_H

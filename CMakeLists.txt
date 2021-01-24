@@ -54,6 +54,7 @@ list(APPEND GAME_SOURCE
      Classes/Physics/PhysicsManager.cpp
      Classes/Physics/SpriteWithPhysics.cpp
      Classes/GameComponents/Ball.cpp
+     Classes/GameComponents/BilliardCue.cpp
      Classes/GameLayer.cpp
      Classes/MenuScene.cpp
      )
@@ -64,6 +65,7 @@ list(APPEND GAME_HEADER
      Classes/Physics/PhysicsManager.h
      Classes/Physics/SpriteWithPhysics.h
      Classes/GameComponents/Ball.h
+     Classes/GameComponents/BilliardCue.h
      Classes/GameLayer.h
      Classes/MenuScene.h
      )

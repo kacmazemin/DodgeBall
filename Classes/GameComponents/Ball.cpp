@@ -10,12 +10,16 @@
 #include "Box2D/Collision/Shapes/b2CircleShape.h"
 #include "GameLayer.h"
 
-
 Ball::Ball(b2World &world, const cocos2d::Vec2& startPos, const bool isPlayerBall) : world(&world), startPos(startPos)
 {
     this->init();
     autorelease();
 
+    createBall(isPlayerBall);
+}
+
+void Ball::createBall(const bool isPlayerBall)
+{
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
 
@@ -24,47 +28,36 @@ Ball::Ball(b2World &world, const cocos2d::Vec2& startPos, const bool isPlayerBal
     spriteBody->SetLinearDamping(1.2);
     spriteBody->SetAngularDamping(0.8);
 
-    //create circle shape
+    //create  shape
     b2CircleShape circle;
     circle.m_radius =  BALL_RADIUS / PTM_RATIO;
 
-    //define fixture
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &circle;
     fixtureDef.density = 5;
     fixtureDef.restitution = 0.7;
 
+    this->initWithFile("ball.png");
+
     if (isPlayerBall)
     {
-        //white ball is tracked as bullet by simulation
         spriteBody->SetBullet(true);
         fixtureDef.filter.categoryBits = 0x0100;
+        setColor(cocos2d::Color3B::WHITE);
     }
     else
     {
         fixtureDef.filter.categoryBits = 0x0010;
+        setColor(cocos2d::Color3B::MAGENTA);
     }
 
-    this->initWithFile("ball.png");
 
     spriteBody->CreateFixture(&fixtureDef);
     spriteBody->SetUserData(this);
 
     ScreenUtils::fitH(this, BALL_RADIUS * 2.0f);
 
-    createBall();
-
-    if(spriteBody)
-    {
-        //spriteBody->ApplyLinearImpulse(b2Vec2(100,10), bodyDef.position, false);
-    }
-
-}
-
-void Ball::createBall()
-{
-    setSpritePosition(startPos);
-    setColor(cocos2d::Color3B::MAGENTA);
+    setBodyPosition(startPos);
 }
 
 void Ball::update(float dt)
@@ -73,5 +66,4 @@ void Ball::update(float dt)
         setPositionX(spriteBody->GetPosition().x * PTM_RATIO);
         setPositionY(spriteBody->GetPosition().y * PTM_RATIO);
     }
-
 }
