@@ -4,7 +4,7 @@
 
 #include "PhysicsManager.h"
 
-#define SCALE_RATIO 32
+#define PTM_RATIO 32
 
 PhysicsManager::PhysicsManager()
 {
@@ -15,7 +15,7 @@ PhysicsManager::PhysicsManager()
     flags += b2Draw::e_jointBit;
     //flags +=b2Draw::e_aabbBit;
     flags += b2Draw::e_centerOfMassBit;
-    debugDraw = new GLESDebugDraw(SCALE_RATIO);
+    debugDraw = new GLESDebugDraw(PTM_RATIO);
     debugDraw->AppendFlags(flags);
 
     world->SetDebugDraw(debugDraw);
@@ -44,7 +44,6 @@ void PhysicsManager::Update()
     int velocityIterations = 1;
 
     world->Step(1.0 / 60.0, velocityIterations, positionIterations);
-
 }
 
 void PhysicsManager::renderDebug()

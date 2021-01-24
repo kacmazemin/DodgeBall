@@ -2,8 +2,8 @@
 // Created by emin on 23.01.2021.
 //
 
-#ifndef PROJ_ANDROID_PHYSICSMANAGER_H
-#define PROJ_ANDROID_PHYSICSMANAGER_H
+#ifndef _PHYSICSMANAGER_H
+#define _PHYSICSMANAGER_H
 
 #include "Utils/GLES-Render.h"
 #include "Box2D/Box2D.h"
@@ -14,7 +14,7 @@ public:
     PhysicsManager();
     ~PhysicsManager();
 
-    inline b2World* GetWorld() const
+    inline b2World* GetWorld()
     {
         return world;
     }
@@ -30,4 +30,4 @@ private:
 };
 
 
-#endif //PROJ_ANDROID_PHYSICSMANAGER_H
+#endif //_PHYSICSMANAGER_H
