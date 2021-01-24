@@ -13,7 +13,7 @@ class b2Body;
 class SpriteWithPhysics : public cocos2d::Sprite
 {
 public:
-    SpriteWithPhysics(const b2World& world);
+    SpriteWithPhysics();
     ~SpriteWithPhysics();
 
     b2Body* spriteBody = nullptr;

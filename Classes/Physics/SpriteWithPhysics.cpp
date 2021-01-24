@@ -5,9 +5,8 @@
 #include "SpriteWithPhysics.h"
 #include "GameLayer.h"
 #include "Box2D/Dynamics/b2Body.h"
-#include "Box2D/Dynamics/b2World.h"
 
-SpriteWithPhysics::SpriteWithPhysics(const b2World& world) : worldRef(&world)
+SpriteWithPhysics::SpriteWithPhysics()
 {
 
 }
