@@ -23,7 +23,7 @@
 # THE SOFTWARE.
 # ****************************************************************************/
 
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.8)
 
 set(APP_NAME LunarBall)
 
@@ -51,6 +51,9 @@ list(APPEND GAME_SOURCE
      Classes/AppDelegate.cpp
      Classes/Utils/GLES-Render.cpp
      Classes/Utils/ScreenUtils.cpp
+     Classes/Physics/PhysicsManager.cpp
+     Classes/Physics/SpriteWithPhysics.cpp
+     Classes/GameComponents/Ball.cpp
      Classes/GameLayer.cpp
      Classes/MenuScene.cpp
      )
@@ -58,6 +61,9 @@ list(APPEND GAME_HEADER
      Classes/AppDelegate.h
      Classes/Utils/GLES-Render.h
      Classes/Utils/ScreenUtils.h
+     Classes/Physics/PhysicsManager.h
+     Classes/Physics/SpriteWithPhysics.h
+     Classes/GameComponents/Ball.h
      Classes/GameLayer.h
      Classes/MenuScene.h
      )
@@ -128,6 +134,7 @@ else()
 endif()
 
 target_link_libraries(${APP_NAME} cocos2d)
+target_compile_features(${APP_NAME} PRIVATE cxx_std_17)
 target_include_directories(${APP_NAME}
         PRIVATE Classes
         PRIVATE ${COCOS2DX_ROOT_PATH}/cocos/audio/include/
