@@ -6,6 +6,17 @@
 #include "Utils/ScreenUtils.h"
 #include "Physics/PhysicsManager.h"
 #include "GameComponents/Ball.h"
+#include "GameComponents/BilliardCue.h"
+
+GameLayer::GameLayer()
+{
+
+}
+
+GameLayer::~GameLayer()
+{
+
+}
 
 cocos2d::Scene *GameLayer::createScene()
 {
@@ -20,10 +31,9 @@ bool GameLayer::init()
     }
 
     physicsManager = std::make_unique<PhysicsManager>();
-
     createBoundaries();
-
     createBalls();
+    createCue();
 
     scheduleUpdate();
 
@@ -54,16 +64,6 @@ void GameLayer::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform
     CHECK_GL_ERROR_DEBUG();
 
     director->popMatrix( cocos2d::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
-}
-
-GameLayer::GameLayer()
-{
-
-}
-
-GameLayer::~GameLayer()
-{
-
 }
 
 void GameLayer::createBoundaries()
@@ -121,4 +121,26 @@ void GameLayer::createBalls()
         startY = startY + (BALL_RADIUS);
     }
 
+}
+
+void GameLayer::createCue()
+{
+    const cocos2d::Size size = ScreenUtils::getVisibleRect().size;
+    const cocos2d::Vec2 ballPos = ScreenUtils::center();
+    const cocos2d::Vec2 cuePos = cocos2d::Vec2{ballPos.x + size.width * .1f + BALL_RADIUS * 11, ballPos.y };
+
+    Ball* ball = new Ball(*physicsManager->GetWorld(), ballPos, true);
+    addChild(ball);
+
+    cue = new BilliardCue(*physicsManager->GetWorld(), cuePos);
+    addChild(cue);
+
+    cocos2d::Action* action = cocos2d::Sequence::create({
+        cocos2d::DelayTime::create(5.f),
+        cocos2d::CallFunc::create([=](){
+           cue->applyForce();
+        })
+    });
+
+    cue->runAction(action);
 }
