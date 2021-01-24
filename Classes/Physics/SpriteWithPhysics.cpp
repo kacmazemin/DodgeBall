@@ -8,7 +8,7 @@
 
 SpriteWithPhysics::SpriteWithPhysics()
 {
-
+    scheduleUpdate();
 }
 
 SpriteWithPhysics::~SpriteWithPhysics()
@@ -25,10 +25,9 @@ void SpriteWithPhysics::update(float dt)
         setPositionY(spriteBody->GetPosition().y * PTM_RATIO);
         setRotation(CC_RADIANS_TO_DEGREES(-1 * spriteBody->GetAngle()));
     }
-
 }
 
-void SpriteWithPhysics::setSpritePosition(const cocos2d::Vec2 &position)
+void SpriteWithPhysics::setBodyPosition(const cocos2d::Vec2 &position)
 {
     if (spriteBody)
     {
