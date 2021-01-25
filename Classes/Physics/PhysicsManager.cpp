@@ -3,12 +3,16 @@
 //
 
 #include "PhysicsManager.h"
+#include "ContactListener.h"
 
 #define PTM_RATIO 32
 
 PhysicsManager::PhysicsManager()
 {
     world = new b2World(gravity);
+
+    contactListener = new ContactListener();
+    world->SetContactListener(contactListener);
 
     uint32 flags = 0;
     flags += b2Draw::e_shapeBit;
@@ -33,6 +37,9 @@ PhysicsManager::~PhysicsManager()
 
     delete world;
     world = nullptr;
+
+    delete contactListener;
+    contactListener = nullptr;
 
     delete debugDraw;
     debugDraw = nullptr;

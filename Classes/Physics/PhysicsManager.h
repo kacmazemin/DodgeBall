@@ -8,6 +8,8 @@
 #include "Utils/GLES-Render.h"
 #include "Box2D/Box2D.h"
 
+class ContactListener;
+
 class PhysicsManager
 {
 public:
@@ -27,6 +29,7 @@ private:
     b2Vec2 gravity = b2Vec2(0, 0);
     GLESDebugDraw* debugDraw = nullptr;
 
+    ContactListener* contactListener = nullptr;
 };
 
 
