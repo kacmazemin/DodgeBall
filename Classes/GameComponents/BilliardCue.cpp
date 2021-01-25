@@ -11,6 +11,7 @@
 #include "Box2D/Dynamics/b2Fixture.h"
 #include "Box2D/Collision/Shapes/b2PolygonShape.h"
 #include "../Utils/ScreenUtils.h"
+#include <math.h>
 
 BilliardCue::BilliardCue(b2World& world, const cocos2d::Vec2& startPos) : world(&world), startPos(startPos)
 {
@@ -27,6 +28,8 @@ BilliardCue::~BilliardCue()
 
 void BilliardCue::createCue()
 {
+    type = PhysicsType::CUE;
+
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
 
@@ -61,8 +64,15 @@ void BilliardCue::applyForce()
 {
     if(spriteBody)
     {
-        const float angle = spriteBody->GetAngle();
+        spriteBody->ApplyLinearImpulse(-b2Vec2(   cos(spriteBody->GetAngle()) * BALL_RADIUS * 22 ,sin(spriteBody->GetAngle()) * BALL_RADIUS * 22 ), spriteBody->GetWorldCenter(), true);
+    }
+}
 
-        spriteBody->ApplyLinearImpulse(b2Vec2(-6 * cos(angle) * 100,  sin(angle) * 6 * 100), spriteBody->GetWorldCenter(), true);
+void BilliardCue::applyNewTransform(const b2Vec2& position, const float angle)
+{
+    if(spriteBody)
+    {
+//        spriteBody->SetAngularVelocity(0);
+        spriteBody->SetTransform( position, angle );
     }
 }

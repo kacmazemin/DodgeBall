@@ -41,12 +41,14 @@ void Ball::createBall(const bool isPlayerBall)
 
     if (isPlayerBall)
     {
+        type = PhysicsType::PLAYER_BALL;
         spriteBody->SetBullet(true);
         fixtureDef.filter.categoryBits = 0x0100;
         setColor(cocos2d::Color3B::WHITE);
     }
     else
     {
+        type = PhysicsType::BALL;
         fixtureDef.filter.categoryBits = 0x0010;
         setColor(cocos2d::Color3B::MAGENTA);
     }
@@ -66,4 +68,13 @@ void Ball::update(float dt)
         setPositionX(spriteBody->GetPosition().x * PTM_RATIO);
         setPositionY(spriteBody->GetPosition().y * PTM_RATIO);
     }
+}
+
+b2Vec2 Ball::getBodyPos() const
+{
+    if(spriteBody)
+    {
+        return spriteBody->GetPosition();
+    }
+    return b2Vec2_zero;
 }

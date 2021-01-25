@@ -11,6 +11,7 @@
 #define BALL_RADIUS ScreenUtils::getVisibleRect().size.height * .025f
 
 class b2World;
+class b2Vec2;
 
 class Ball : public SpriteWithPhysics
 {
@@ -18,6 +19,8 @@ public:
     Ball(b2World& world, const cocos2d::Vec2& startPos, const bool isPlayer = false);
 
     virtual void update (float dt);
+
+    b2Vec2 getBodyPos () const;
 
 private:
     b2World* world = nullptr;

@@ -8,6 +8,7 @@
 #include "../Physics/SpriteWithPhysics.h"
 
 class b2World;
+class b2Vec2;
 
 class BilliardCue : public SpriteWithPhysics
 {
@@ -17,13 +18,14 @@ public:
 
     void applyForce();
 
+    void applyNewTransform(const b2Vec2& position, const float angle);
+
 private:
     b2World* world = nullptr;
 
     cocos2d::Vec2 startPos = cocos2d::Vec2::ZERO;
 
     void createCue();
-
 };
 
 

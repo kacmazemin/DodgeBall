@@ -50,3 +50,14 @@ void SpriteWithPhysics::reset()
 {
 
 }
+
+float SpriteWithPhysics::getMagnitude() const
+{
+    if (spriteBody)
+    {
+        return std::pow(spriteBody->GetLinearVelocity().x, 2) +
+               std::pow(spriteBody->GetLinearVelocity().y, 2);
+    }
+
+    return .0f;
+}
