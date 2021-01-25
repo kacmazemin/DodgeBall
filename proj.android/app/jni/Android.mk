@@ -14,8 +14,10 @@ LOCAL_SRC_FILES := $(LOCAL_PATH)/hellocpp/main.cpp \
                    $(LOCAL_PATH)/../../../Classes/MenuScene.cpp \
                    $(LOCAL_PATH)/../../../Classes/Physics/PhysicsManager.cpp \
                    $(LOCAL_PATH)/../../../Classes/Physics/SpriteWithPhysics.cpp \
+                   $(LOCAL_PATH)/../../../Classes/Physics/ContactListener.cpp \
                    $(LOCAL_PATH)/../../../Classes/GameComponents/Ball.cpp \
-                   $(LOCAL_PATH)/../../../Classes/GameComponents/BilliardCue.cpp
+                   $(LOCAL_PATH)/../../../Classes/GameComponents/BilliardCue.cpp \
+                   $(LOCAL_PATH)/../../../Classes/GameComponents/GhostCue.cpp
 
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../../Classes

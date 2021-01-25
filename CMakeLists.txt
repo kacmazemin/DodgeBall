@@ -53,8 +53,10 @@ list(APPEND GAME_SOURCE
      Classes/Utils/ScreenUtils.cpp
      Classes/Physics/PhysicsManager.cpp
      Classes/Physics/SpriteWithPhysics.cpp
+     Classes/Physics/ContactListener.cpp
      Classes/GameComponents/Ball.cpp
      Classes/GameComponents/BilliardCue.cpp
+     Classes/GameComponents/GhostCue.cpp
      Classes/GameLayer.cpp
      Classes/MenuScene.cpp
      )
@@ -64,8 +66,10 @@ list(APPEND GAME_HEADER
      Classes/Utils/ScreenUtils.h
      Classes/Physics/PhysicsManager.h
      Classes/Physics/SpriteWithPhysics.h
+     Classes/Physics/ContactListener.h
      Classes/GameComponents/Ball.h
      Classes/GameComponents/BilliardCue.h
+     Classes/GameComponents/GhostCue.h
      Classes/GameLayer.h
      Classes/MenuScene.h
      )
