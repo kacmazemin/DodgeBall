@@ -22,6 +22,9 @@ public:
 
     b2Vec2 getBodyPos () const;
 
+    const bool isAwake() const;
+
+
 private:
     b2World* world = nullptr;
 

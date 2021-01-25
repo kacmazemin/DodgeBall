@@ -78,3 +78,12 @@ b2Vec2 Ball::getBodyPos() const
     }
     return b2Vec2_zero;
 }
+
+const bool Ball::isAwake() const
+{
+    if(spriteBody)
+    {
+        return spriteBody->IsAwake();
+    }
+    return false;
+}

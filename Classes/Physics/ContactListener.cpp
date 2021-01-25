@@ -2,6 +2,7 @@
 // Created by emin on 25.01.2021.
 //
 
+#include <cocos/base/CCEventCustom.h>
 #include "ContactListener.h"
 #include "Physics/SpriteWithPhysics.h"
 #include "SimpleAudioEngine.h"
@@ -17,7 +18,8 @@ void ContactListener::BeginContact(b2Contact *contact)
     if (spriteA && spriteB) {
         if (spriteA->getType() == PhysicsType::BALL &&
             spriteB->getType() == PhysicsType::BALL) {
-            if (spriteA->getMagnitude() > 5 || spriteB->getMagnitude() > 5) {
+            if (spriteA->getMagnitude() > 5 || spriteB->getMagnitude() > 5)
+            {
                 CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("Sounds/cue-hit-ball.wav");
             }
 
@@ -39,8 +41,7 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
         if (spriteA->getType() == PhysicsType::CUE && spriteA->getMagnitude() > 2) {
             if (spriteB->getType() == PhysicsType::PLAYER_BALL && spriteA->isVisible()) {
                 CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("Sounds/cue-hit-ball.wav");
-//                spriteA->setVisible(false);
-//                spriteB->getGame()->setCanShoot(false);
+                spriteA->hide();
             }
         }
 //        else if (spriteB->getType() == kSpriteCue && spriteA->mag() > 2)

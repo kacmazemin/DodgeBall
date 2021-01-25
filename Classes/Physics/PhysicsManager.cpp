@@ -55,5 +55,5 @@ void PhysicsManager::Update()
 
 void PhysicsManager::renderDebug()
 {
-    world->DrawDebugData();
+//    world->DrawDebugData();
 }

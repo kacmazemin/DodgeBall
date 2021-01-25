@@ -48,7 +48,8 @@ void SpriteWithPhysics::hide()
 
 void SpriteWithPhysics::reset()
 {
-
+    spriteBody->SetActive(true);
+    spriteBody->SetAwake(true);
 }
 
 float SpriteWithPhysics::getMagnitude() const

@@ -64,7 +64,8 @@ void BilliardCue::applyForce()
 {
     if(spriteBody)
     {
-        spriteBody->ApplyLinearImpulse(-b2Vec2(   cos(spriteBody->GetAngle()) * BALL_RADIUS * 22 ,sin(spriteBody->GetAngle()) * BALL_RADIUS * 22 ), spriteBody->GetWorldCenter(), true);
+        spriteBody->ApplyLinearImpulse(-b2Vec2(cos(spriteBody->GetAngle()) * BALL_RADIUS * 22,
+                sin(spriteBody->GetAngle()) * BALL_RADIUS * 22 ),spriteBody->GetWorldCenter(),true);
     }
 }
 
@@ -72,7 +73,20 @@ void BilliardCue::applyNewTransform(const b2Vec2& position, const float angle)
 {
     if(spriteBody)
     {
-//        spriteBody->SetAngularVelocity(0);
+        spriteBody->SetAngularVelocity(0);
         spriteBody->SetTransform( position, angle );
     }
+}
+
+void BilliardCue::hide()
+{
+//    setVisible(false);
+
+    runAction(cocos2d::Sequence::create({
+        cocos2d::DelayTime::create(0.2f),
+        cocos2d::CallFunc::create([=]()
+        {
+            SpriteWithPhysics::hide();
+        })
+    }));
 }

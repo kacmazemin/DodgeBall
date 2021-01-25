@@ -36,11 +36,12 @@ public:
 
     float getMagnitude() const;
 
+    virtual void hide();
+    virtual void reset();
+
 protected:
     virtual void setBodyPosition (const cocos2d::Vec2& position);
     virtual void update(float dt);
-    virtual void hide();
-    virtual void reset();
 
     PhysicsType type = PhysicsType::UNDEFINED;
 };

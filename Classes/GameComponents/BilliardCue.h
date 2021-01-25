@@ -20,6 +20,8 @@ public:
 
     void applyNewTransform(const b2Vec2& position, const float angle);
 
+    virtual void hide() override;
+
 private:
     b2World* world = nullptr;
 
