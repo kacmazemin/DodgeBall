@@ -15,10 +15,11 @@ public:
     Pocket(b2World& world, const cocos2d::Vec2& pos);
     ~Pocket();
 
+    void addOffset(const cocos2d::Vec2& offset);
+
 private:
     b2World* world = nullptr;
     cocos2d::Vec2 pos = cocos2d::Vec2::ZERO;
-    cocos2d::Size offset = cocos2d::Size::ZERO;
 
     void createBody();
 };

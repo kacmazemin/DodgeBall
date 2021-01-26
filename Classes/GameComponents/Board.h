@@ -10,6 +10,7 @@
 
 class b2World;
 class b2Body;
+class Pocket;
 
 namespace cocos2d
 {
@@ -30,6 +31,8 @@ private:
     b2Body* groundBody = nullptr;
 
     cocos2d::Vec2 pos = cocos2d::Vec2::ZERO;
+
+    std::vector<Pocket*> pockets;
 
     void createTableSprite();
     void createPhysicEdges();

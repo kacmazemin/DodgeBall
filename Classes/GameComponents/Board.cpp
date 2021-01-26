@@ -91,12 +91,12 @@ void Board::createPockets()
 {
     const cocos2d::Rect tableBB = tableSprite->getBoundingBox();
 
-    const float offset = tableBB.size.height * .1f;
+    const float offset = tableBB.size.height * .09f;
     const float startX = tableBB.getMinX() + offset;
     const float topPocketsY = tableBB.getMaxY() - offset;
 
     const float distanceX = (tableBB.size.width - (offset * 2)) * .5f;
-    const float distanceY = tableBB.size.height - ((3 * BALL_RADIUS)) - offset;
+    const float distanceY = tableBB.size.height -  (offset * 2);
 
     for (int i = 0; i < 2 ; i++)
     {
@@ -104,7 +104,11 @@ void Board::createPockets()
         {
             auto* pocket = new Pocket(*world,
                     cocos2d::Vec2{startX + (j * distanceX), topPocketsY - (distanceY * i)});
+            pockets.emplace_back(pocket);
             addChild(pocket);
         }
     }
+
+    pockets[1]->addOffset(cocos2d::Vec2{-offset * .15f, offset * .3f});
+    pockets[4]->addOffset(cocos2d::Vec2{-offset * .15f, -offset * .3f});
 }

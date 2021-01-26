@@ -41,5 +41,11 @@ void Pocket::createBody()
 
     spriteBody->SetUserData(this);
 
+    //added offset since b2body and cocos2dx origin is not same
     setBodyPosition(ScreenUtils::center() + pos);
+}
+
+void Pocket::addOffset(const cocos2d::Vec2& offset)
+{
+    setBodyPosition(ScreenUtils::center() + pos + offset);
 }
