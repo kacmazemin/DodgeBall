@@ -3,7 +3,6 @@
 //
 
 #include "Pocket.h"
-#include "GameLayer.h"
 #include "Ball.h"
 #include "Box2D/Collision/Shapes/b2CircleShape.h"
 #include "Box2D/Dynamics/b2Body.h"
@@ -14,6 +13,8 @@ Pocket::Pocket(b2World& world, const cocos2d::Vec2& pos) : world(&world), pos(po
 {
     this->init();
     autorelease();
+
+    unscheduleUpdate();
 
     type = PhysicsType::POCKET;
     createBody();
@@ -38,12 +39,7 @@ void Pocket::createBody()
     fixtureDef.shape = &circle;
     spriteBody->CreateFixture(&fixtureDef);
 
-    ScreenUtils::fitH(this, BALL_RADIUS * 3.f);
-
-
-    this->initWithFile("hole.png");
     spriteBody->SetUserData(this);
 
-    setBodyPosition(pos);
+    setBodyPosition(ScreenUtils::center() + pos);
 }
-
