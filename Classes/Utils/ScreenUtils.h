@@ -7,6 +7,7 @@
 
 #include "cocos2d.h"
 
+#define PTM_RATIO 32
 
 class ScreenUtils {
 

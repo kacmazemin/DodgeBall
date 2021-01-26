@@ -57,6 +57,8 @@ list(APPEND GAME_SOURCE
      Classes/GameComponents/Ball.cpp
      Classes/GameComponents/BilliardCue.cpp
      Classes/GameComponents/GhostCue.cpp
+     Classes/GameComponents/Pocket.cpp
+     Classes/GameComponents/Board.cpp
      Classes/GameLayer.cpp
      Classes/MenuScene.cpp
      )
@@ -70,6 +72,8 @@ list(APPEND GAME_HEADER
      Classes/GameComponents/Ball.h
      Classes/GameComponents/BilliardCue.h
      Classes/GameComponents/GhostCue.h
+     Classes/GameComponents/Pocket.h
+     Classes/GameComponents/Board.h
      Classes/GameLayer.h
      Classes/MenuScene.h
      )
