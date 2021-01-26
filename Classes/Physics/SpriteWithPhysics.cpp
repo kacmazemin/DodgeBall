@@ -3,8 +3,8 @@
 //
 
 #include "SpriteWithPhysics.h"
-#include "GameLayer.h"
 #include "Box2D/Dynamics/b2Body.h"
+#include "../Utils/ScreenUtils.h"
 
 SpriteWithPhysics::SpriteWithPhysics()
 {
@@ -18,7 +18,6 @@ SpriteWithPhysics::~SpriteWithPhysics()
 
 void SpriteWithPhysics::update(float dt)
 {
-
     if (spriteBody && isVisible())
     {
         setPositionX(spriteBody->GetPosition().x * PTM_RATIO);
@@ -43,6 +42,7 @@ void SpriteWithPhysics::hide()
         spriteBody->SetAngularVelocity(0);
         spriteBody->SetTransform(b2Vec2_zero, 0.0);
         spriteBody->SetAwake(false);
+        spriteBody->SetActive(false);
     }
 }
 

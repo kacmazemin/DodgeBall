@@ -4,7 +4,6 @@
 
 #include "BilliardCue.h"
 
-#include "../GameLayer.h"
 #include "Ball.h"
 #include "Box2D/Dynamics/b2Body.h"
 #include "Box2D/Dynamics/b2World.h"
@@ -80,10 +79,8 @@ void BilliardCue::applyNewTransform(const b2Vec2& position, const float angle)
 
 void BilliardCue::hide()
 {
-//    setVisible(false);
-
     runAction(cocos2d::Sequence::create({
-        cocos2d::DelayTime::create(0.2f),
+        cocos2d::DelayTime::create(0.01f),
         cocos2d::CallFunc::create([=]()
         {
             SpriteWithPhysics::hide();
