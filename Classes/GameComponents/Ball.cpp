@@ -8,7 +8,6 @@
 #include "Box2D/Dynamics/b2Body.h"
 #include "Box2D/Dynamics/b2Fixture.h"
 #include "Box2D/Collision/Shapes/b2CircleShape.h"
-#include "GameLayer.h"
 
 Ball::Ball(b2World &world, const cocos2d::Vec2& startPos, const bool isPlayerBall) : world(&world), startPos(startPos)
 {
@@ -53,7 +52,6 @@ void Ball::createBall(const bool isPlayerBall)
         setColor(cocos2d::Color3B::MAGENTA);
     }
 
-
     spriteBody->CreateFixture(&fixtureDef);
     spriteBody->SetUserData(this);
 
@@ -79,11 +77,17 @@ b2Vec2 Ball::getBodyPos() const
     return b2Vec2_zero;
 }
 
-const bool Ball::isAwake() const
+bool Ball::isAwake() const
 {
     if(spriteBody)
     {
         return spriteBody->IsAwake();
     }
     return false;
+}
+
+void Ball::hide()
+{
+    setVisible(false);
+    SpriteWithPhysics::hide();
 }

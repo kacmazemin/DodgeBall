@@ -18,11 +18,13 @@ class Ball : public SpriteWithPhysics
 public:
     Ball(b2World& world, const cocos2d::Vec2& startPos, const bool isPlayer = false);
 
-    virtual void update (float dt);
+    virtual void update (float dt) override;
 
     b2Vec2 getBodyPos () const;
 
-    const bool isAwake() const;
+    bool isAwake() const;
+
+    virtual void hide() override;
 
 
 private:
