@@ -8,6 +8,8 @@
 #include "GameComponents/Ball.h"
 #include "GameComponents/BilliardCue.h"
 #include "GameComponents/GhostCue.h"
+#include "GameComponents/Pocket.h"
+#include "GameComponents/Board.h"
 #include <ui/UIButton.h>
 
 namespace
@@ -40,7 +42,7 @@ bool GameLayer::init()
     createTouchListener();
 
     physicsManager = std::make_unique<PhysicsManager>();
-    createBoundaries();
+    createBoard();
     createBalls();
     createCue();
 
@@ -76,44 +78,14 @@ void GameLayer::update(float dt)
         isBallMoving = false;
     }
 
-    if(cue)
-    {
-        CCLOG("WORKWORKWORK VISIBILITY %i", cue->isVisible());
-    }
 }
 
-void GameLayer::createBoundaries()
+void GameLayer::createBoard()
 {
-    const float offsetX = ScreenUtils::getVisibleRect().size.width * .05f;
-    const float offsetY = ScreenUtils::getVisibleRect().size.height * .05f;
-
-    b2BodyDef groundBodyDef;
-    groundBodyDef.position.Set(0, 0); // bottom-left corner
-
-    b2Body* groundBody = physicsManager->GetWorld()->CreateBody(&groundBodyDef);
-    
-    // Define the ground box shape.
-    b2EdgeShape groundBox;
-
-    // bottom
-    groundBox.Set(b2Vec2((ScreenUtils::leftBottom().x + offsetX) / PTM_RATIO, (ScreenUtils::leftBottom().y + offsetY) / PTM_RATIO),
-                  b2Vec2((ScreenUtils::rightBottom().x - offsetX) / PTM_RATIO, (ScreenUtils::rightBottom().y + offsetY) / PTM_RATIO));
-    groundBody->CreateFixture(&groundBox,0);
-
-    // top
-    groundBox.Set(b2Vec2((ScreenUtils::leftTop().x + offsetX) / PTM_RATIO, (ScreenUtils::leftTop().y - offsetY) / PTM_RATIO),
-                  b2Vec2((ScreenUtils::rightTop().x - offsetX) / PTM_RATIO, (ScreenUtils::rightTop().y - offsetY) / PTM_RATIO));
-    groundBody->CreateFixture(&groundBox,0);
-
-    // left
-    groundBox.Set(b2Vec2((ScreenUtils::leftTop().x + offsetX) / PTM_RATIO, (ScreenUtils::leftTop().y - offsetY) / PTM_RATIO),
-                  b2Vec2((ScreenUtils::leftBottom().x + offsetX) / PTM_RATIO, (ScreenUtils::leftBottom().y + offsetY) / PTM_RATIO));
-    groundBody->CreateFixture(&groundBox,0);
-
-    // right
-    groundBox.Set(b2Vec2((ScreenUtils::rightBottom().x - offsetX) / PTM_RATIO, (ScreenUtils::rightBottom().y + offsetY) / PTM_RATIO),
-                  b2Vec2((ScreenUtils::rightTop().x - offsetX ) / PTM_RATIO, (ScreenUtils::rightTop().y - offsetY) / PTM_RATIO));
-    groundBody->CreateFixture(&groundBox,0);
+    board = new Board(*physicsManager->GetWorld());
+    board->setPosition(ScreenUtils::center());
+    board->changePhysicsPosition(ScreenUtils::center());
+    addChild(board);
 }
 
 void GameLayer::createBalls()
@@ -218,7 +190,7 @@ void GameLayer::createButton()
             case cocos2d::ui::Widget::TouchEventType::BEGAN:
                 break;
             case cocos2d::ui::Widget::TouchEventType::ENDED:
-                if(playerBall)
+                if(playerBall && !isBallMoving)
                 {
                     isBallMoving = true;
 

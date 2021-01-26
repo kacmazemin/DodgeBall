@@ -7,12 +7,11 @@
 
 #include "cocos2d.h"
 
-#define PTM_RATIO 32
-
 class PhysicsManager;
 class BilliardCue;
 class Ball;
 class GhostCue;
+class Board;
 
 class GameLayer : public cocos2d::Scene
 {
@@ -42,12 +41,13 @@ private:
     BilliardCue* cue = nullptr;
     GhostCue* ghostCue = nullptr;
     Ball* playerBall = nullptr;
+    Board* board = nullptr;
 
     void createTouchListener();
 
     void update(float dt);
 
-    void createBoundaries();
+    void createBoard();
     void createBalls();
 
     void createCue();
