@@ -12,8 +12,10 @@ void ContactListener::BeginContact(b2Contact *contact)
     b2Body * bodyA = contact->GetFixtureA()->GetBody();
     b2Body * bodyB = contact->GetFixtureB()->GetBody();
 
-    SpriteWithPhysics * spriteA = static_cast<SpriteWithPhysics*>(bodyA->GetUserData());
-    SpriteWithPhysics * spriteB = static_cast<SpriteWithPhysics*>(bodyB->GetUserData());
+    SpriteWithPhysics* spriteA = static_cast<SpriteWithPhysics*>(bodyA->GetUserData());
+    SpriteWithPhysics* spriteB = static_cast<SpriteWithPhysics*>(bodyB->GetUserData());
+
+
 
     if (spriteA && spriteB) {
         if (spriteA->getType() == PhysicsType::BALL &&
@@ -22,7 +24,11 @@ void ContactListener::BeginContact(b2Contact *contact)
             {
                 CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("Sounds/cue-hit-ball.wav");
             }
-
+        }
+        else if (spriteA->getType() == PhysicsType::POCKET &&
+                 spriteB->getType() == PhysicsType::BALL)
+        {
+            spriteB->hide();
         }
     }
 }
@@ -44,15 +50,6 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
                 spriteA->hide();
             }
         }
-//        else if (spriteB->getType() == kSpriteCue && spriteA->mag() > 2)
-//        {
-//            if (spriteA->getType() == kSpritePlayer && spriteB->isVisible()) {
-//                CocosDenshionSimpleAudioEngine::sharedEngine()->playEffect("hit.ogg");
-//                spriteB->setVisible(false);
-//                spriteA->getGame()->setCanShoot(false);
-//            }
-//        }
-
     }
 
 }
