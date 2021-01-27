@@ -17,7 +17,6 @@ public:
     ~BilliardCue();
 
     void applyForce();
-
     void applyNewTransform(const b2Vec2& position, const float angle);
 
     virtual void hide() override;

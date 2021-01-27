@@ -105,7 +105,6 @@ void GameLayer::createBalls()
 
             gameBalls.emplace_back(ball);
         }
-
         startY = startY + (BALL_RADIUS);
     }
 

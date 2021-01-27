@@ -47,13 +47,11 @@ PhysicsManager::~PhysicsManager()
 
 void PhysicsManager::Update()
 {
-    int positionIterations = 5;
-    int velocityIterations = 1;
-
-    world->Step(1.0 / 60.0, velocityIterations, positionIterations);
+    //fixed time step for 60fps
+    world->Step(1.0f / 60.0f, 10, 10);
 }
 
 void PhysicsManager::renderDebug()
 {
-//    world->DrawDebugData();
+    world->DrawDebugData();
 }
