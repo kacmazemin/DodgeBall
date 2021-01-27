@@ -28,13 +28,13 @@ public:
 
 private:
 
-    cocos2d::Vec2 playerBallInitPosition = cocos2d::Vec2::ZERO;
-
     bool canManipulateCue = true;
     bool isBallMoving = false;
     bool isPlayerBallFail = false;
 
     float previousAngle = 0;
+
+    cocos2d::Vec2 playerBallInitPosition = cocos2d::Vec2::ZERO;
 
     std::unique_ptr<PhysicsManager> physicsManager;
 
@@ -43,9 +43,10 @@ private:
     Ball* playerBall = nullptr;
     Board* board = nullptr;
 
+    cocos2d::EventListenerCustom* onPlayerBallAndPocketCollided = nullptr;
+
     std::vector<Ball*> gameBalls;
 
-    cocos2d::EventListenerCustom* onPlayerBallAndPocketCollided;
 
     void createTouchListener();
     void createCustomEventListener();
