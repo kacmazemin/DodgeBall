@@ -9,7 +9,8 @@
 #include "Box2D/Dynamics/b2Fixture.h"
 #include "Box2D/Collision/Shapes/b2CircleShape.h"
 
-Ball::Ball(b2World &world, const cocos2d::Vec2& startPos, const bool isPlayerBall) : world(&world), startPos(startPos)
+Ball::Ball(b2World &world, const cocos2d::Vec2& startPos, const bool isPlayerBall)
+: world(&world), startPos(startPos), isPlayerBall(isPlayerBall)
 {
     this->init();
     autorelease();
@@ -42,13 +43,13 @@ void Ball::createBall(const bool isPlayerBall)
     {
         type = PhysicsType::PLAYER_BALL;
         spriteBody->SetBullet(true);
-        fixtureDef.filter.categoryBits = 0x0100;
+        fixtureDef.filter.categoryBits = playerBallCategoryBit;
         setColor(cocos2d::Color3B::WHITE);
     }
     else
     {
         type = PhysicsType::BALL;
-        fixtureDef.filter.categoryBits = 0x0010;
+        fixtureDef.filter.categoryBits = ballCategoryBit;
         setColor(cocos2d::Color3B::MAGENTA);
     }
 
@@ -88,6 +89,31 @@ bool Ball::isAwake() const
 
 void Ball::hide()
 {
+    if(spriteBody && !isPlayerBall)
+    {
+        if(b2Fixture* bodyFixture = spriteBody->GetFixtureList())
+        {
+            bodyFixture->SetSensor(true);
+        }
+    }
+
     setVisible(false);
     SpriteWithPhysics::hide();
+}
+
+void Ball::reset()
+{
+    if(spriteBody && !isPlayerBall)
+    {
+        if(b2Fixture* bodyFixture = spriteBody->GetFixtureList())
+        {
+            bodyFixture->SetSensor(false);
+
+            b2Filter filter = bodyFixture->GetFilterData();
+            filter.categoryBits = ballCategoryBit;
+            bodyFixture->SetFilterData(filter);
+        }
+    }
+
+    SpriteWithPhysics::reset();
 }

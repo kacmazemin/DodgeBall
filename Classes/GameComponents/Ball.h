@@ -25,9 +25,11 @@ public:
     bool isAwake() const;
 
     virtual void hide() override;
+    virtual void reset() override;
 
 
 private:
+    bool isPlayerBall = false;
     b2World* world = nullptr;
 
     cocos2d::Vec2 startPos = cocos2d::Vec2::ZERO;

@@ -42,8 +42,7 @@ void BilliardCue::createCue()
 
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &box;
-    //todo define maskBits and use it
-    fixtureDef.filter.maskBits = 0x0100;
+    fixtureDef.filter.maskBits = playerBallCategoryBit;
     fixtureDef.density = 10;
     fixtureDef.restitution = 1;
     spriteBody->CreateFixture(&fixtureDef);
