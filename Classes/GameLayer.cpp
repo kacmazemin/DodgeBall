@@ -5,17 +5,13 @@
 #include "GameLayer.h"
 #include "Utils/ScreenUtils.h"
 #include "Physics/PhysicsManager.h"
+#include "Physics/SpriteWithPhysics.h"
 #include "GameComponents/Ball.h"
 #include "GameComponents/BilliardCue.h"
 #include "GameComponents/GhostCue.h"
 #include "GameComponents/Pocket.h"
 #include "GameComponents/Board.h"
 #include <ui/UIButton.h>
-
-namespace
-{
-    constexpr int resetCueActionTagNo= 565;
-}
 
 GameLayer::GameLayer()
 {
@@ -24,7 +20,7 @@ GameLayer::GameLayer()
 
 GameLayer::~GameLayer()
 {
-
+    _eventDispatcher->removeEventListener(onPlayerBallAndPocketCollided);
 }
 
 cocos2d::Scene *GameLayer::createScene()
@@ -44,9 +40,10 @@ bool GameLayer::init()
     physicsManager = std::make_unique<PhysicsManager>();
     createBoard();
     createBalls();
-    createCue();
+    createCueAndPlayerBall();
 
     createButton();
+    createCustomEventListener();
     scheduleUpdate();
 
     return true;
@@ -72,7 +69,7 @@ void GameLayer::update(float dt)
         canManipulateCue = !playerBall->isAwake();
     }
 
-    if(canManipulateCue && isBallMoving)
+    if(canManipulateCue && isBallMoving && !isPlayerBallFail)
     {
         resetCue();
         isBallMoving = false;
@@ -102,8 +99,11 @@ void GameLayer::createBalls()
         {
             pos.x = startX - (BALL_RADIUS * 2) * i;
             pos.y = startY - ((BALL_RADIUS * 2) * j);
+
             Ball* ball = new Ball(*physicsManager->GetWorld(), pos);
             addChild(ball);
+
+            gameBalls.emplace_back(ball);
         }
 
         startY = startY + (BALL_RADIUS);
@@ -111,17 +111,20 @@ void GameLayer::createBalls()
 
 }
 
-void GameLayer::createCue()
+void GameLayer::createCueAndPlayerBall()
 {
     const cocos2d::Size size = ScreenUtils::getVisibleRect().size;
-    const cocos2d::Vec2 ballPos = cocos2d::Vec2{ScreenUtils::center().x + size.width * .2f, ScreenUtils::center().y};
-    const cocos2d::Vec2 cuePos = cocos2d::Vec2{ballPos.x + size.width * .1f + BALL_RADIUS * 11, ballPos.y };
+    const auto boardBB = cocos2d::utils::getCascadeBoundingBox(board);
+    playerBallInitPosition = {boardBB.getMidX() + boardBB.size.width * .25f, boardBB.getMidY()};
+    const cocos2d::Vec2 cuePos = {playerBallInitPosition.x + size.width * .1f + BALL_RADIUS * 11, playerBallInitPosition.y };
 
-    playerBall = new Ball(*physicsManager->GetWorld(), ballPos, true);
+
+    playerBall = new Ball(*physicsManager->GetWorld(), playerBallInitPosition, true);
     addChild(playerBall);
 
+
     ghostCue = new GhostCue();
-    ghostCue->setPosition(ballPos);
+    ghostCue->setPosition(playerBallInitPosition);
 
     addChild(ghostCue);
 
@@ -148,9 +151,6 @@ void GameLayer::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform
 
 bool GameLayer::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event)
 {
-    startLocation = touch->getStartLocation();
-    firstLocation = cue->getPosition();
-
     auto diff = playerBall->getPosition() - touch->getLocation();
     previousAngle = CC_RADIANS_TO_DEGREES(atan2(diff.x, diff.y));
     return true;
@@ -160,7 +160,7 @@ void GameLayer::onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event)
 {
     cocos2d::Vec2 currentLocation = touch->getLocation();
 
-    if(canManipulateCue && ghostCue)
+    if(canManipulateCue && ghostCue && !isPlayerBallFail)
     {
         auto diff = ghostCue->getPosition() - touch->getLocation();
         auto angle = CC_RADIANS_TO_DEGREES(atan2(diff.x, diff.y));
@@ -190,7 +190,7 @@ void GameLayer::createButton()
             case cocos2d::ui::Widget::TouchEventType::BEGAN:
                 break;
             case cocos2d::ui::Widget::TouchEventType::ENDED:
-                if(playerBall && !isBallMoving)
+                if(playerBall && !isBallMoving && !isPlayerBallFail)
                 {
                     isBallMoving = true;
 
@@ -205,6 +205,25 @@ void GameLayer::createButton()
     });
 
     this->addChild(button);
+
+    auto resetButton = cocos2d::ui::Button::create("button-normal.png", "button-clicked.png", "button-clicked.png");
+
+    resetButton->setTitleText("RESET");
+
+    resetButton->setPosition(cocos2d::Vec2{button->getPositionX(), button->getBoundingBox().getMinY() - button->getBoundingBox().size.height});
+
+    resetButton->addTouchEventListener([&](Ref* sender, cocos2d::ui::Widget::TouchEventType type){
+        switch (type)
+        {
+            case cocos2d::ui::Widget::TouchEventType::ENDED:
+                restartGame();
+                break;
+            default:
+                break;
+        }
+    });
+
+    this->addChild(resetButton);
 }
 
 void GameLayer::resetCue()
@@ -217,14 +236,56 @@ void GameLayer::resetCue()
         cue->reset();
         cue->setVisible(false);
         isBallMoving = false;
+        isPlayerBallFail = false;
     }
 }
 
-void GameLayer::fireCue()
+void GameLayer::createCustomEventListener()
 {
-    if(playerBall && cue)
+    onPlayerBallAndPocketCollided = cocos2d::EventListenerCustom::create("onPlayerBallAndPocketCollided",
+    [=](cocos2d::EventCustom* event)
     {
-        cue->applyForce();
-        ghostCue->setPosition(playerBall->getPosition());
+        isPlayerBallFail = true;
+
+        runAction(cocos2d::Sequence::create({
+                cocos2d::DelayTime::create(2.2f),
+                cocos2d::CallFunc::create([=]()
+                {
+                    isBallMoving = false;
+
+                    const cocos2d::Size size = ScreenUtils::getVisibleRect().size;
+                    const cocos2d::Vec2 ballPos = cocos2d::Vec2{
+                            ScreenUtils::center().x +
+                            size.width * .2f,
+                            ScreenUtils::center().y};
+
+                    ghostCue->setVisible(false);
+                    cue->setVisible(false);
+
+                    playerBall->setVisible(true);
+                    playerBall->setBodyPosition(ballPos);
+
+                }),
+                cocos2d::DelayTime::create(1.5f),
+                cocos2d::CallFunc::create([=]()
+                {
+                    resetCue();
+                })
+        }));
+    });
+
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(onPlayerBallAndPocketCollided, this);
+}
+
+void GameLayer::restartGame()
+{
+    for (const auto& ball : gameBalls)
+    {
+        ball->reset();
+        ball->setVisible(true);
     }
+
+    playerBall->setPosition(playerBallInitPosition);
+    playerBall->reset();
+    resetCue();
 }

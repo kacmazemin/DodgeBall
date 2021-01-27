@@ -28,11 +28,11 @@ public:
 
 private:
 
-    cocos2d::Vec2 startLocation = cocos2d::Vec2::ZERO;
-    cocos2d::Vec2 firstLocation = cocos2d::Vec2::ZERO;
+    cocos2d::Vec2 playerBallInitPosition = cocos2d::Vec2::ZERO;
 
     bool canManipulateCue = true;
     bool isBallMoving = false;
+    bool isPlayerBallFail = false;
 
     float previousAngle = 0;
 
@@ -43,14 +43,19 @@ private:
     Ball* playerBall = nullptr;
     Board* board = nullptr;
 
+    std::vector<Ball*> gameBalls;
+
+    cocos2d::EventListenerCustom* onPlayerBallAndPocketCollided;
+
     void createTouchListener();
+    void createCustomEventListener();
 
     void update(float dt);
 
     void createBoard();
     void createBalls();
-
-    void createCue();
+    void createCueAndPlayerBall();
+    void createButton();
 
     void draw(cocos2d::Renderer *renderer, const cocos2d::Mat4& transform, uint32_t flags);
 
@@ -58,10 +63,10 @@ private:
     virtual void onTouchMoved(cocos2d::Touch * touch, cocos2d::Event * event);
     virtual void onTouchEnded(cocos2d::Touch * touch, cocos2d::Event * event);
 
-    void createButton();
-
     void resetCue();
-    void fireCue();
+
+    void restartGame();
+
 
 };
 
