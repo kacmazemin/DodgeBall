@@ -42,13 +42,11 @@ void SpriteWithPhysics::hide()
         spriteBody->SetAngularVelocity(0);
         spriteBody->SetTransform(b2Vec2_zero, 0.0);
         spriteBody->SetAwake(false);
-        spriteBody->SetActive(false);
     }
 }
 
 void SpriteWithPhysics::reset()
 {
-    spriteBody->SetActive(true);
     spriteBody->SetAwake(true);
 }
 
