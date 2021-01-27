@@ -115,5 +115,6 @@ void Ball::reset()
         }
     }
 
+    setBodyPosition(startPos);
     SpriteWithPhysics::reset();
 }
