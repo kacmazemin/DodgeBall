@@ -33,10 +33,7 @@ cocos2d::Vec2 GhostCue::getPos() const
     return convertToWorldSpace(sprite->getPosition());
 }
 
-void GhostCue::changeVisibility(const bool isEnable)
+cocos2d::Vec2 GhostCue::getSpritePosition() const
 {
-    if(sprite)
-    {
-        sprite->setVisible(isEnable);
-    }
+    return convertToWorldSpace(sprite->getPosition());
 }

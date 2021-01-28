@@ -21,8 +21,7 @@ public:
 
     cocos2d::Vec2 getPos() const;
 
-    void changeVisibility(const bool isEnable);
-
+    cocos2d::Vec2 getSpritePosition() const;
 private:
 
     void createSprite();
