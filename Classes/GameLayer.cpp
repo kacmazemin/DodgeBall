@@ -13,6 +13,7 @@
 #include "GameComponents/Board.h"
 #include <ui/UIButton.h>
 #include "UI/CuePanel.h"
+#include "UI/LoadingNode.h"
 
 GameLayer::GameLayer()
 {
@@ -41,9 +42,11 @@ bool GameLayer::init()
     physicsManager = std::make_unique<PhysicsManager>();
     createBoard();
     createBalls();
-    createCueAndPlayerBall();
     createCuePanel();
+    createLoadingNode();
     createButton();
+    createCueAndPlayerBall();
+
     createCustomEventListener();
     scheduleUpdate();
 
@@ -73,7 +76,6 @@ void GameLayer::update(float dt)
     if(canManipulateCue && isBallMoving && !isPlayerBallFail)
     {
         resetCue();
-        isBallMoving = false;
     }
 
 }
@@ -136,13 +138,24 @@ void GameLayer::createCuePanel()
 {
     cuePanel = new CuePanel(ScreenUtils::getVisibleRect().size * .5f);
 
-
     const cocos2d::Size panelSize = cocos2d::utils::getCascadeBoundingBox(cuePanel).size;
 
     cuePanel->setPosition(ScreenUtils::left().x + panelSize.width * .5f, ScreenUtils::center().y);
     addChild(cuePanel);
 
     cuePanel->setRotation(-90);
+}
+
+void GameLayer::createLoadingNode()
+{
+    loadingNode = new LoadingNode(ScreenUtils::getVisibleRect().size * .2f);
+    addChild(loadingNode);
+
+    const cocos2d::Size loadingNodeSize = cocos2d::utils::getCascadeBoundingBox(loadingNode).size;
+    loadingNode->setPosition(ScreenUtils::rightTop() - loadingNodeSize * .5f);
+
+    loadingNode->setVisible(false);
+
 }
 
 void GameLayer::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags)
@@ -205,6 +218,10 @@ void GameLayer::createButton()
                 if(playerBall && !isBallMoving && !isPlayerBallFail)
                 {
                     isBallMoving = true;
+                    if(loadingNode)
+                    {
+                        loadingNode->setVisible(isBallMoving);
+                    }
 
                     ghostCue->setVisible(false);
                     cue->setVisible(true);
@@ -274,6 +291,11 @@ void GameLayer::resetCue()
         cue->setVisible(false);
         isBallMoving = false;
         isPlayerBallFail = false;
+
+        if(loadingNode)
+        {
+            loadingNode->setVisible(isBallMoving);
+        }
     }
 }
 

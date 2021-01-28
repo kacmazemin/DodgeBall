@@ -13,6 +13,7 @@ class Ball;
 class GhostCue;
 class Board;
 class CuePanel;
+class LoadingNode;
 
 class GameLayer : public cocos2d::Scene
 {
@@ -44,6 +45,7 @@ private:
     Ball* playerBall = nullptr;
     Board* board = nullptr;
     CuePanel* cuePanel = nullptr;
+    LoadingNode* loadingNode = nullptr;
 
     cocos2d::EventListenerCustom* onPlayerBallAndPocketCollided = nullptr;
 
@@ -60,6 +62,7 @@ private:
     void createCueAndPlayerBall();
     void createButton();
     void createCuePanel();
+    void createLoadingNode();
 
     void draw(cocos2d::Renderer *renderer, const cocos2d::Mat4& transform, uint32_t flags);
 
