@@ -26,6 +26,7 @@ public:
 
     static void fitH(cocos2d::Node* node , float height);
     static void fitW(cocos2d::Node* node , float width);
+    static void fitWH(cocos2d::Node* node , float width, float height);
 
 private:
     static void lazyInit();

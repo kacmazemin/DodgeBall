@@ -84,3 +84,9 @@ void ScreenUtils::fitW(cocos2d::Node *node, float width)
 {
     node->setScale(width / node->getContentSize().width);
 }
+
+void ScreenUtils::fitWH(cocos2d::Node *node, float width, float height)
+{
+    node->setScale(width / node->getContentSize().width);
+    node->setScale(height / node->getContentSize().height);
+}
