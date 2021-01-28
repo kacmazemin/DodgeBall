@@ -62,6 +62,7 @@ list(APPEND GAME_SOURCE
      Classes/GameLayer.cpp
      Classes/MenuScene.cpp
      Classes/UI/CuePanel.cpp
+     Classes/UI/LoadingNode.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
@@ -78,6 +79,7 @@ list(APPEND GAME_HEADER
      Classes/GameLayer.h
      Classes/MenuScene.h
      Classes/UI/CuePanel.h
+     Classes/UI/LoadingNode.h
      )
 
 if(ANDROID)

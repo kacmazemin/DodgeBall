@@ -19,7 +19,8 @@ LOCAL_SRC_FILES := $(LOCAL_PATH)/hellocpp/main.cpp \
                    $(LOCAL_PATH)/../../../Classes/GameComponents/BilliardCue.cpp \
                    $(LOCAL_PATH)/../../../Classes/GameComponents/GhostCue.cpp \
                    $(LOCAL_PATH)/../../../Classes/GameComponents/Board.cpp \
-                   $(LOCAL_PATH)/../../../Classes/UI/CuePanel.cpp
+                   $(LOCAL_PATH)/../../../Classes/UI/CuePanel.cpp \
+                   $(LOCAL_PATH)/../../../Classes/UI/LoadingNode.cpp
 
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../../Classes
