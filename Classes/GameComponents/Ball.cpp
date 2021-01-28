@@ -89,7 +89,7 @@ bool Ball::isAwake() const
 
 void Ball::hide()
 {
-    if(spriteBody && !isPlayerBall)
+    if(spriteBody)
     {
         if(b2Fixture* bodyFixture = spriteBody->GetFixtureList())
         {
@@ -103,14 +103,14 @@ void Ball::hide()
 
 void Ball::reset()
 {
-    if(spriteBody && !isPlayerBall)
+    if(spriteBody)
     {
         if(b2Fixture* bodyFixture = spriteBody->GetFixtureList())
         {
             bodyFixture->SetSensor(false);
 
             b2Filter filter = bodyFixture->GetFilterData();
-            filter.categoryBits = ballCategoryBit;
+            filter.categoryBits = isPlayerBall ? playerBallCategoryBit :  ballCategoryBit;
             bodyFixture->SetFilterData(filter);
         }
     }

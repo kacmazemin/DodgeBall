@@ -16,10 +16,11 @@ public:
     BilliardCue(b2World& world, const cocos2d::Vec2& startPos);
     ~BilliardCue();
 
-    void applyForce();
+    void applyForce(const float power);
     void applyNewTransform(const b2Vec2& position, const float angle);
 
     virtual void hide() override;
+    virtual void reset() override;
 
 private:
     b2World* world = nullptr;

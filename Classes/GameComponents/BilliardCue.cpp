@@ -58,12 +58,12 @@ void BilliardCue::createCue()
     ScreenUtils::fitW(this, BALL_RADIUS * 22);
 }
 
-void BilliardCue::applyForce()
+void BilliardCue::applyForce(const float power)
 {
     if(spriteBody)
     {
-        spriteBody->ApplyLinearImpulse(-b2Vec2(cos(spriteBody->GetAngle()) * BALL_RADIUS * 22,
-                sin(spriteBody->GetAngle()) * BALL_RADIUS * 22 ),spriteBody->GetWorldCenter(),true);
+        spriteBody->ApplyLinearImpulse(-b2Vec2(cos(spriteBody->GetAngle()) * power,
+                sin(spriteBody->GetAngle()) * power ),spriteBody->GetWorldCenter(),true);
     }
 }
 
@@ -82,7 +82,30 @@ void BilliardCue::hide()
         cocos2d::DelayTime::create(0.01f),
         cocos2d::CallFunc::create([=]()
         {
+            if(spriteBody)
+            {
+                if(b2Fixture* bodyFixture = spriteBody->GetFixtureList())
+                {
+                    bodyFixture->SetSensor(true);
+                }
+            }
             SpriteWithPhysics::hide();
         })
     }));
+}
+
+void BilliardCue::reset()
+{
+    if(spriteBody)
+    {
+        if(b2Fixture* bodyFixture = spriteBody->GetFixtureList())
+        {
+            bodyFixture->SetSensor(false);
+
+            b2Filter filter = bodyFixture->GetFilterData();
+            filter.maskBits = playerBallCategoryBit;
+            bodyFixture->SetFilterData(filter);
+        }
+    }
+    SpriteWithPhysics::reset();
 }

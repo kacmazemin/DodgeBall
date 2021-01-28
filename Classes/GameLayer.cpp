@@ -71,9 +71,11 @@ void GameLayer::update(float dt)
     if(playerBall)
     {
         canManipulateCue = !playerBall->isAwake();
+//        checkIfPlayerBallOutsideOfBoard();
+
     }
 
-    if(canManipulateCue && isBallMoving && !isPlayerBallFail)
+    if(canManipulateCue && isCueFired && !isPlayerBallFail)
     {
         resetCue();
     }
@@ -86,6 +88,8 @@ void GameLayer::createBoard()
     board->setPosition(ScreenUtils::center());
     board->changePhysicsPosition(ScreenUtils::center());
     addChild(board);
+
+    boardRect = cocos2d::utils::getCascadeBoundingBox(board);
 }
 
 void GameLayer::createBalls()
@@ -119,18 +123,16 @@ void GameLayer::createCueAndPlayerBall()
     const auto boardBB = cocos2d::utils::getCascadeBoundingBox(board);
     playerBallInitPosition = {boardBB.getMidX() + boardBB.size.width * .25f, boardBB.getMidY()};
 
-
-
     playerBall = new Ball(*physicsManager->GetWorld(), playerBallInitPosition, true);
-    addChild(playerBall);
 
     ghostCue = new GhostCue();
     ghostCue->setPosition(playerBallInitPosition);
 
-    addChild(ghostCue);
-
     cue = new BilliardCue(*physicsManager->GetWorld(), ghostCue->getSpritePosition());
     cue->setVisible(false);
+
+    addChild(playerBall);
+    addChild(ghostCue);
     addChild(cue);
 }
 
@@ -215,17 +217,18 @@ void GameLayer::createButton()
             case cocos2d::ui::Widget::TouchEventType::BEGAN:
                 break;
             case cocos2d::ui::Widget::TouchEventType::ENDED:
-                if(playerBall && !isBallMoving && !isPlayerBallFail)
+                if(playerBall && !isCueFired && !isPlayerBallFail)
                 {
-                    isBallMoving = true;
+                    isCueFired = true;
                     if(loadingNode)
                     {
-                        loadingNode->setVisible(isBallMoving);
+                        loadingNode->setVisible(isCueFired);
                     }
 
                     ghostCue->setVisible(false);
                     cue->setVisible(true);
-                    cue->applyForce();
+
+                    cue->applyForce(cuePanel->getPowerFromBar());
                 }
                 break;
             default:
@@ -289,48 +292,45 @@ void GameLayer::resetCue()
         cue->applyNewTransform(b2Vec2(ghostCue->getPos().x / PTM_RATIO, ghostCue->getPos().y / PTM_RATIO), CC_DEGREES_TO_RADIANS(-ghostCue->getRotation()));
         cue->reset();
         cue->setVisible(false);
-        isBallMoving = false;
+        isCueFired = false;
         isPlayerBallFail = false;
 
         if(loadingNode)
         {
-            loadingNode->setVisible(isBallMoving);
+            loadingNode->setVisible(isCueFired);
         }
     }
 }
+
+void GameLayer::handlePlayerBallFail()
+{
+    isPlayerBallFail = true;
+
+    runAction(cocos2d::Sequence::create({
+        cocos2d::DelayTime::create(2.2f),
+        cocos2d::CallFunc::create([=]() {
+            isCueFired = false;
+
+            ghostCue->setVisible(false);
+            cue->setVisible(false);
+
+            playerBall->setVisible(true);
+            playerBall->reset();
+        }),
+        cocos2d::DelayTime::create(1.5f),
+        cocos2d::CallFunc::create([=]() {
+            resetCue();
+        })
+    }));
+}
+
 
 void GameLayer::createCustomEventListener()
 {
     onPlayerBallAndPocketCollided = cocos2d::EventListenerCustom::create("onPlayerBallAndPocketCollided",
     [=](cocos2d::EventCustom* event)
     {
-        isPlayerBallFail = true;
-
-        runAction(cocos2d::Sequence::create({
-                cocos2d::DelayTime::create(2.2f),
-                cocos2d::CallFunc::create([=]()
-                {
-                    isBallMoving = false;
-
-                    const cocos2d::Size size = ScreenUtils::getVisibleRect().size;
-                    const cocos2d::Vec2 ballPos = cocos2d::Vec2{
-                            ScreenUtils::center().x +
-                            size.width * .2f,
-                            ScreenUtils::center().y};
-
-                    ghostCue->setVisible(false);
-                    cue->setVisible(false);
-
-                    playerBall->setVisible(true);
-                    playerBall->setBodyPosition(ballPos);
-
-                }),
-                cocos2d::DelayTime::create(1.5f),
-                cocos2d::CallFunc::create([=]()
-                {
-                    resetCue();
-                })
-        }));
+        handlePlayerBallFail();
     });
 
     _eventDispatcher->addEventListenerWithSceneGraphPriority(onPlayerBallAndPocketCollided, this);

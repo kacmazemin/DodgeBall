@@ -31,12 +31,14 @@ public:
 private:
 
     bool canManipulateCue = true;
-    bool isBallMoving = false;
+    bool isCueFired = false;
     bool isPlayerBallFail = false;
     bool isA = true;
     float previousAngle = 0;
 
     cocos2d::Vec2 playerBallInitPosition = cocos2d::Vec2::ZERO;
+
+    cocos2d::Rect boardRect = cocos2d::Rect::ZERO;
 
     std::unique_ptr<PhysicsManager> physicsManager;
 
@@ -71,6 +73,7 @@ private:
     virtual void onTouchEnded(cocos2d::Touch * touch, cocos2d::Event * event);
 
     void resetCue();
+    void handlePlayerBallFail();
 
     void restartGame();
 
