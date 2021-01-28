@@ -12,6 +12,7 @@
 #include "GameComponents/Pocket.h"
 #include "GameComponents/Board.h"
 #include <ui/UIButton.h>
+#include "UI/CuePanel.h"
 
 GameLayer::GameLayer()
 {
@@ -41,7 +42,7 @@ bool GameLayer::init()
     createBoard();
     createBalls();
     createCueAndPlayerBall();
-
+    createCuePanel();
     createButton();
     createCustomEventListener();
     scheduleUpdate();
@@ -115,21 +116,33 @@ void GameLayer::createCueAndPlayerBall()
     const cocos2d::Size size = ScreenUtils::getVisibleRect().size;
     const auto boardBB = cocos2d::utils::getCascadeBoundingBox(board);
     playerBallInitPosition = {boardBB.getMidX() + boardBB.size.width * .25f, boardBB.getMidY()};
-    const cocos2d::Vec2 cuePos = {playerBallInitPosition.x + size.width * .1f + BALL_RADIUS * 11, playerBallInitPosition.y };
+
 
 
     playerBall = new Ball(*physicsManager->GetWorld(), playerBallInitPosition, true);
     addChild(playerBall);
-
 
     ghostCue = new GhostCue();
     ghostCue->setPosition(playerBallInitPosition);
 
     addChild(ghostCue);
 
-    cue = new BilliardCue(*physicsManager->GetWorld(), cuePos);
+    cue = new BilliardCue(*physicsManager->GetWorld(), ghostCue->getSpritePosition());
     cue->setVisible(false);
     addChild(cue);
+}
+
+void GameLayer::createCuePanel()
+{
+    cuePanel = new CuePanel(ScreenUtils::getVisibleRect().size * .5f);
+
+
+    const cocos2d::Size panelSize = cocos2d::utils::getCascadeBoundingBox(cuePanel).size;
+
+    cuePanel->setPosition(ScreenUtils::left().x + panelSize.width * .5f, ScreenUtils::center().y);
+    addChild(cuePanel);
+
+    cuePanel->setRotation(-90);
 }
 
 void GameLayer::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags)
@@ -223,6 +236,31 @@ void GameLayer::createButton()
     });
 
     this->addChild(resetButton);
+
+    auto panelButton = cocos2d::ui::Button::create("button-normal.png", "button-clicked.png", "button-clicked.png");
+
+    panelButton->setTitleText("A/S");
+
+    panelButton->setPosition(cocos2d::Vec2{button->getPositionX(), resetButton->getBoundingBox().getMinY() - button->getBoundingBox().size.height});
+
+    panelButton->addTouchEventListener([&](Ref* sender, cocos2d::ui::Widget::TouchEventType type){
+        switch (type)
+        {
+            case cocos2d::ui::Widget::TouchEventType::ENDED:
+
+                if(cuePanel)
+                {
+                    isA = !isA;
+                    cuePanel->changeActivity(isA);
+                }
+
+                break;
+            default:
+                break;
+        }
+    });
+
+    this->addChild(panelButton);
 }
 
 void GameLayer::resetCue()

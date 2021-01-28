@@ -12,6 +12,7 @@ class BilliardCue;
 class Ball;
 class GhostCue;
 class Board;
+class CuePanel;
 
 class GameLayer : public cocos2d::Scene
 {
@@ -31,7 +32,7 @@ private:
     bool canManipulateCue = true;
     bool isBallMoving = false;
     bool isPlayerBallFail = false;
-
+    bool isA = true;
     float previousAngle = 0;
 
     cocos2d::Vec2 playerBallInitPosition = cocos2d::Vec2::ZERO;
@@ -42,6 +43,7 @@ private:
     GhostCue* ghostCue = nullptr;
     Ball* playerBall = nullptr;
     Board* board = nullptr;
+    CuePanel* cuePanel = nullptr;
 
     cocos2d::EventListenerCustom* onPlayerBallAndPocketCollided = nullptr;
 
@@ -57,6 +59,7 @@ private:
     void createBalls();
     void createCueAndPlayerBall();
     void createButton();
+    void createCuePanel();
 
     void draw(cocos2d::Renderer *renderer, const cocos2d::Mat4& transform, uint32_t flags);
 
