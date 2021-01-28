@@ -25,6 +25,8 @@ public:
 
     void changeActivity(const bool isActive);
 
+    float getPowerFromBar() const;
+
     virtual void update(float dt) override;
 private:
     float percent = 0;

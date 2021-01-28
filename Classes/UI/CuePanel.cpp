@@ -66,3 +66,8 @@ void CuePanel::changeActivity(const bool isActive)
         this->scheduleUpdate();
     }
 }
+
+float CuePanel::getPowerFromBar() const
+{
+    return percent;
+}
