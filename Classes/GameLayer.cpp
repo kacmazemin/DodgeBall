@@ -23,6 +23,7 @@ GameLayer::GameLayer()
 GameLayer::~GameLayer()
 {
     _eventDispatcher->removeEventListener(onPlayerBallAndPocketCollided);
+    _eventDispatcher->removeEventListener(onCueHitPlayerBall);
 }
 
 cocos2d::Scene *GameLayer::createScene()
@@ -71,8 +72,6 @@ void GameLayer::update(float dt)
     if(playerBall)
     {
         canManipulateCue = !playerBall->isAwake();
-//        checkIfPlayerBallOutsideOfBoard();
-
     }
 
     if(canManipulateCue && isCueFired && !isPlayerBallFail)
@@ -217,17 +216,15 @@ void GameLayer::createButton()
             case cocos2d::ui::Widget::TouchEventType::BEGAN:
                 break;
             case cocos2d::ui::Widget::TouchEventType::ENDED:
-                if(playerBall && !isCueFired && !isPlayerBallFail)
+                if(!isCueFired && !isPlayerBallFail && canManipulateCue)
                 {
-                    isCueFired = true;
                     if(loadingNode)
                     {
-                        loadingNode->setVisible(isCueFired);
+                        loadingNode->setVisible(true);
                     }
 
                     ghostCue->setVisible(false);
                     cue->setVisible(true);
-
                     cue->applyForce(cuePanel->getPowerFromBar());
                 }
                 break;
@@ -297,7 +294,7 @@ void GameLayer::resetCue()
 
         if(loadingNode)
         {
-            loadingNode->setVisible(isCueFired);
+            loadingNode->setVisible(false);
         }
     }
 }
@@ -333,7 +330,14 @@ void GameLayer::createCustomEventListener()
         handlePlayerBallFail();
     });
 
+    onCueHitPlayerBall = cocos2d::EventListenerCustom::create("onCueHitPlayerBall",
+    [=](cocos2d::EventCustom* event)
+    {
+        isCueFired = true;
+    });
+
     _eventDispatcher->addEventListenerWithSceneGraphPriority(onPlayerBallAndPocketCollided, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(onCueHitPlayerBall, this);
 }
 
 void GameLayer::restartGame()

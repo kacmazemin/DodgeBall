@@ -69,5 +69,5 @@ void CuePanel::changeActivity(const bool isActive)
 
 float CuePanel::getPowerFromBar() const
 {
-    return percent;
+    return std::max(15.f, percent);
 }

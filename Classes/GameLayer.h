@@ -50,6 +50,7 @@ private:
     LoadingNode* loadingNode = nullptr;
 
     cocos2d::EventListenerCustom* onPlayerBallAndPocketCollided = nullptr;
+    cocos2d::EventListenerCustom* onCueHitPlayerBall = nullptr;
 
     std::vector<Ball*> gameBalls;
 

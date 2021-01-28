@@ -52,10 +52,11 @@ void ContactListener::PreSolve(b2Contact* contact, const b2Manifold* oldManifold
     if (spriteA && spriteB) {
 
         //track collision between player and cue ball
-        if (spriteA->getType() == PhysicsType::CUE) {
-            if (spriteB->getType() == PhysicsType::PLAYER_BALL && spriteA->isVisible()) {
+        if (spriteA->getType() == PhysicsType::CUE && spriteA->getMagnitude() > 2) {
+            if (spriteB->getType() == PhysicsType::PLAYER_BALL && spriteB->isVisible()) {
                 CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("Sounds/cue-hit-ball.wav");
                 spriteA->hide();
+                cocos2d::Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("onCueHitPlayerBall");
             }
         }
     }
