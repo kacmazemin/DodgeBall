@@ -22,7 +22,8 @@ LOCAL_SRC_FILES := $(LOCAL_PATH)/hellocpp/main.cpp \
                    $(LOCAL_PATH)/../../../Classes/UI/CuePanel.cpp \
                    $(LOCAL_PATH)/../../../Classes/UI/LoadingNode.cpp \
                    $(LOCAL_PATH)/../../../Classes/UI/BallChartNode.cpp \
-                   $(LOCAL_PATH)/../../../Classes/UI/RemainingShootNode.cpp
+                   $(LOCAL_PATH)/../../../Classes/UI/RemainingShootNode.cpp \
+                   $(LOCAL_PATH)/../../../Classes/UI/AnnouncerNode.cpp
 
 
 
