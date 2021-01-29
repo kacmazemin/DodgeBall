@@ -14,6 +14,7 @@ class GhostCue;
 class Board;
 class CuePanel;
 class LoadingNode;
+class BallChartNode;
 
 class GameLayer : public cocos2d::Scene
 {
@@ -36,6 +37,8 @@ private:
     bool isA = true;
     float previousAngle = 0;
 
+    cocos2d::Sprite* backgorund = nullptr;
+
     cocos2d::Vec2 playerBallInitPosition = cocos2d::Vec2::ZERO;
 
     cocos2d::Rect boardRect = cocos2d::Rect::ZERO;
@@ -48,9 +51,11 @@ private:
     Board* board = nullptr;
     CuePanel* cuePanel = nullptr;
     LoadingNode* loadingNode = nullptr;
+    BallChartNode* ballChartNode = nullptr;
 
     cocos2d::EventListenerCustom* onPlayerBallAndPocketCollided = nullptr;
     cocos2d::EventListenerCustom* onCueHitPlayerBall = nullptr;
+    cocos2d::EventListenerCustom* onBallHitPocket = nullptr;
 
     std::vector<Ball*> gameBalls;
 
@@ -60,11 +65,13 @@ private:
 
     void update(float dt);
 
+    void createBackground();
     void createBoard();
     void createBalls();
     void createCueAndPlayerBall();
     void createButton();
     void createCuePanel();
+    void createBallChartNode();
     void createLoadingNode();
 
     void draw(cocos2d::Renderer *renderer, const cocos2d::Mat4& transform, uint32_t flags);

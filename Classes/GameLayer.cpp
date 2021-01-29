@@ -14,6 +14,7 @@
 #include <ui/UIButton.h>
 #include "UI/CuePanel.h"
 #include "UI/LoadingNode.h"
+#include "UI/BallChartNode.h"
 
 GameLayer::GameLayer()
 {
@@ -24,6 +25,7 @@ GameLayer::~GameLayer()
 {
     _eventDispatcher->removeEventListener(onPlayerBallAndPocketCollided);
     _eventDispatcher->removeEventListener(onCueHitPlayerBall);
+    _eventDispatcher->removeEventListener(onBallHitPocket);
 }
 
 cocos2d::Scene *GameLayer::createScene()
@@ -41,12 +43,14 @@ bool GameLayer::init()
     createTouchListener();
 
     physicsManager = std::make_unique<PhysicsManager>();
+    createBackground();
     createBoard();
     createBalls();
     createCuePanel();
     createLoadingNode();
     createButton();
     createCueAndPlayerBall();
+    createBallChartNode();
 
     createCustomEventListener();
     scheduleUpdate();
@@ -81,6 +85,15 @@ void GameLayer::update(float dt)
 
 }
 
+void GameLayer::createBackground()
+{
+    backgorund = cocos2d::Sprite::create("textures/gameplay-bg.jpg");
+    ScreenUtils::fitH(backgorund, ScreenUtils::getVisibleRect().size.height);
+    backgorund->setPosition(ScreenUtils::center());
+
+    addChild(backgorund);
+}
+
 void GameLayer::createBoard()
 {
     board = new Board(*physicsManager->GetWorld());
@@ -98,15 +111,17 @@ void GameLayer::createBalls()
     float startY = ScreenUtils::center().y;
     cocos2d::Vec2 pos = cocos2d::Vec2::ZERO;
 
+    int id = 0;
     //pyramid positioning logic
     for (int i = 0; i < 5 ; i++)
     {
         for(int j = 0; j < i + 1; j++)
         {
+            id++;
             pos.x = startX - (BALL_RADIUS * 2) * i;
             pos.y = startY - ((BALL_RADIUS * 2) * j);
 
-            Ball* ball = new Ball(*physicsManager->GetWorld(), pos);
+            Ball* ball = new Ball(*physicsManager->GetWorld(), pos, id);
             addChild(ball);
 
             gameBalls.emplace_back(ball);
@@ -122,7 +137,7 @@ void GameLayer::createCueAndPlayerBall()
     const auto boardBB = cocos2d::utils::getCascadeBoundingBox(board);
     playerBallInitPosition = {boardBB.getMidX() + boardBB.size.width * .25f, boardBB.getMidY()};
 
-    playerBall = new Ball(*physicsManager->GetWorld(), playerBallInitPosition, true);
+    playerBall = new Ball(*physicsManager->GetWorld(), playerBallInitPosition, 0, true);
 
     ghostCue = new GhostCue();
     ghostCue->setPosition(playerBallInitPosition);
@@ -130,9 +145,9 @@ void GameLayer::createCueAndPlayerBall()
     cue = new BilliardCue(*physicsManager->GetWorld(), ghostCue->getSpritePosition());
     cue->setVisible(false);
 
-    addChild(playerBall);
-    addChild(ghostCue);
-    addChild(cue);
+    addChild(playerBall,1);
+    addChild(ghostCue, 1);
+    addChild(cue, 1);
 }
 
 void GameLayer::createCuePanel()
@@ -145,6 +160,15 @@ void GameLayer::createCuePanel()
     addChild(cuePanel);
 
     cuePanel->setRotation(-90);
+}
+
+void GameLayer::createBallChartNode()
+{
+    const float desiredHeight = ScreenUtils::top().y - boardRect.getMaxY();
+
+    ballChartNode = new BallChartNode(desiredHeight, gameBalls.size());
+    ballChartNode->setPosition(ScreenUtils::top());
+    addChild(ballChartNode);
 }
 
 void GameLayer::createLoadingNode()
@@ -169,7 +193,7 @@ void GameLayer::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform
     director->loadMatrix( cocos2d::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, transform);
 
     cocos2d::GL::enableVertexAttribs(cocos2d::GL::VERTEX_ATTRIB_FLAG_POSITION);
-    physicsManager->renderDebug();
+//    physicsManager->renderDebug();
     CHECK_GL_ERROR_DEBUG();
 
     director->popMatrix( cocos2d::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
@@ -336,8 +360,18 @@ void GameLayer::createCustomEventListener()
         isCueFired = true;
     });
 
+    onBallHitPocket = cocos2d::EventListenerCustom::create("onBallHitPocket",
+    [=](cocos2d::EventCustom* event)
+    {
+        if(ballChartNode)
+        {
+            ballChartNode->setCollected();
+        }
+    });
+
     _eventDispatcher->addEventListenerWithSceneGraphPriority(onPlayerBallAndPocketCollided, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(onCueHitPlayerBall, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(onBallHitPocket, this);
 }
 
 void GameLayer::restartGame()
@@ -350,5 +384,7 @@ void GameLayer::restartGame()
 
     playerBall->setPosition(playerBallInitPosition);
     playerBall->reset();
+
+    ballChartNode->reset();
     resetCue();
 }
