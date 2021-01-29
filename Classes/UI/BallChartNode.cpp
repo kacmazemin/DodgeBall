@@ -80,7 +80,6 @@ void BallChartNode::playEntranceAnimation()
 
 void BallChartNode::playBallSortingAnimation()
 {
-
     for (int i = 0; i < balls.size(); i++)
     {
         balls[i]->runAction(cocos2d::Sequence::create(
@@ -89,7 +88,6 @@ void BallChartNode::playBallSortingAnimation()
             cocos2d::EaseExponentialIn::create(cocos2d::ScaleTo::create(.2f, ballInitialScale))
         }));
     }
-
 }
 
 void BallChartNode::setCollected()

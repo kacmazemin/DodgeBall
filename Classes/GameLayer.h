@@ -15,6 +15,8 @@ class Board;
 class CuePanel;
 class LoadingNode;
 class BallChartNode;
+class RemainingShootNode;
+class AnnouncerNode;
 
 class GameLayer : public cocos2d::Scene
 {
@@ -34,10 +36,11 @@ private:
     bool canManipulateCue = true;
     bool isCueFired = false;
     bool isPlayerBallFail = false;
-    bool isA = true;
+
+    int remainingAttempting = 5;
     float previousAngle = 0;
 
-    cocos2d::Sprite* backgorund = nullptr;
+    cocos2d::Sprite* background = nullptr;
 
     cocos2d::Vec2 playerBallInitPosition = cocos2d::Vec2::ZERO;
 
@@ -52,13 +55,14 @@ private:
     CuePanel* cuePanel = nullptr;
     LoadingNode* loadingNode = nullptr;
     BallChartNode* ballChartNode = nullptr;
+    RemainingShootNode* remainingShootNode = nullptr;
+    AnnouncerNode* announcerNode = nullptr;
 
     cocos2d::EventListenerCustom* onPlayerBallAndPocketCollided = nullptr;
     cocos2d::EventListenerCustom* onCueHitPlayerBall = nullptr;
     cocos2d::EventListenerCustom* onBallHitPocket = nullptr;
 
     std::vector<Ball*> gameBalls;
-
 
     void createTouchListener();
     void createCustomEventListener();
@@ -72,6 +76,8 @@ private:
     void createButton();
     void createCuePanel();
     void createBallChartNode();
+    void createRemainingShootNode();
+    void createAnnouncerNode();
     void createLoadingNode();
 
     void draw(cocos2d::Renderer *renderer, const cocos2d::Mat4& transform, uint32_t flags);

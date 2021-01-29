@@ -15,6 +15,13 @@
 #include "UI/CuePanel.h"
 #include "UI/LoadingNode.h"
 #include "UI/BallChartNode.h"
+#include "UI/RemainingShootNode.h"
+#include "UI/AnnouncerNode.h"
+
+namespace
+{
+    constexpr int attemptCount = 5;
+}
 
 GameLayer::GameLayer()
 {
@@ -51,6 +58,8 @@ bool GameLayer::init()
     createButton();
     createCueAndPlayerBall();
     createBallChartNode();
+    createRemainingShootNode();
+    createAnnouncerNode();
 
     createCustomEventListener();
     scheduleUpdate();
@@ -87,11 +96,12 @@ void GameLayer::update(float dt)
 
 void GameLayer::createBackground()
 {
-    backgorund = cocos2d::Sprite::create("textures/gameplay-bg.jpg");
-    ScreenUtils::fitH(backgorund, ScreenUtils::getVisibleRect().size.height);
-    backgorund->setPosition(ScreenUtils::center());
+    background = cocos2d::Sprite::create("textures/gameplay-bg.jpg");
+    ScreenUtils::fitWH(background, ScreenUtils::getVisibleRect().size.width,
+                       ScreenUtils::getVisibleRect().size.height);
+    background->setPosition(ScreenUtils::center());
 
-    addChild(backgorund);
+    addChild(background);
 }
 
 void GameLayer::createBoard()
@@ -171,6 +181,23 @@ void GameLayer::createBallChartNode()
     addChild(ballChartNode);
 }
 
+void GameLayer::createRemainingShootNode()
+{
+    const float desiredHeight = boardRect.getMinY() - ScreenUtils::bottom().y;
+
+    remainingShootNode = new RemainingShootNode(desiredHeight, 5);
+    remainingShootNode->setPosition(ScreenUtils::bottom());
+    addChild(remainingShootNode);
+}
+
+void GameLayer::createAnnouncerNode()
+{
+    announcerNode = new AnnouncerNode();
+    announcerNode->setPositionX(ScreenUtils::center().x);
+    announcerNode->setPositionY(ScreenUtils::center().y + ScreenUtils::getVisibleRect().size.height * .2f);
+    addChild(announcerNode, 2);
+}
+
 void GameLayer::createLoadingNode()
 {
     loadingNode = new LoadingNode(ScreenUtils::getVisibleRect().size * .2f);
@@ -242,6 +269,11 @@ void GameLayer::createButton()
             case cocos2d::ui::Widget::TouchEventType::ENDED:
                 if(!isCueFired && !isPlayerBallFail && canManipulateCue)
                 {
+                    if(cuePanel)
+                    {
+                        cuePanel->changeActivity(false);
+                    }
+
                     if(loadingNode)
                     {
                         loadingNode->setVisible(true);
@@ -289,12 +321,10 @@ void GameLayer::createButton()
         {
             case cocos2d::ui::Widget::TouchEventType::ENDED:
 
-                if(cuePanel)
+                if(announcerNode)
                 {
-                    isA = !isA;
-                    cuePanel->changeActivity(isA);
+                    announcerNode->makeAnnounce(AnnounceType::EndGame);
                 }
-
                 break;
             default:
                 break;
@@ -320,12 +350,24 @@ void GameLayer::resetCue()
         {
             loadingNode->setVisible(false);
         }
+
+        if(cuePanel)
+        {
+            cuePanel->changeActivity(true);
+        }
     }
 }
 
 void GameLayer::handlePlayerBallFail()
 {
     isPlayerBallFail = true;
+
+    remainingAttempting--;
+
+    if(remainingShootNode)
+    {
+        remainingShootNode->consumeSlot();
+    }
 
     runAction(cocos2d::Sequence::create({
         cocos2d::DelayTime::create(2.2f),
@@ -352,6 +394,11 @@ void GameLayer::createCustomEventListener()
     [=](cocos2d::EventCustom* event)
     {
         handlePlayerBallFail();
+
+        if(announcerNode)
+        {
+            announcerNode->makeAnnounce(AnnounceType::Fail);
+        }
     });
 
     onCueHitPlayerBall = cocos2d::EventListenerCustom::create("onCueHitPlayerBall",
@@ -366,6 +413,11 @@ void GameLayer::createCustomEventListener()
         if(ballChartNode)
         {
             ballChartNode->setCollected();
+
+            if(announcerNode)
+            {
+                announcerNode->makeAnnounce(AnnounceType::Score);
+            }
         }
     });
 
@@ -376,6 +428,8 @@ void GameLayer::createCustomEventListener()
 
 void GameLayer::restartGame()
 {
+    remainingAttempting = attemptCount;
+
     for (const auto& ball : gameBalls)
     {
         ball->reset();
@@ -385,6 +439,15 @@ void GameLayer::restartGame()
     playerBall->setPosition(playerBallInitPosition);
     playerBall->reset();
 
-    ballChartNode->reset();
+    if(ballChartNode)
+    {
+        ballChartNode->reset();
+    }
+
+    if(remainingShootNode)
+    {
+        remainingShootNode->reset();
+    }
+
     resetCue();
 }
