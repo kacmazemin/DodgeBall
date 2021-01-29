@@ -21,7 +21,7 @@ CuePanel::CuePanel(const cocos2d::Size& size) : size(size)
 void CuePanel::createBackground()
 {
     background = cocos2d::Sprite::create("textures/cue-panel-bar-bg.png");
-    ScreenUtils::fitH(background, size.height);
+    ScreenUtils::fitW(background, size.width);
 
     addChild(background);
 
@@ -30,7 +30,7 @@ void CuePanel::createBackground()
 void CuePanel::createBar()
 {
     bar = cocos2d::ui::LoadingBar::create("textures/bar-gradient-fill-texture.png");
-    ScreenUtils::fitW(bar, size.height);
+    ScreenUtils::fitW(bar, background->getBoundingBox().size.height);
     background->setRotation(90);
 
     addChild(bar);

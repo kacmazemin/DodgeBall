@@ -162,14 +162,17 @@ void GameLayer::createCueAndPlayerBall()
 
 void GameLayer::createCuePanel()
 {
-    cuePanel = new CuePanel(ScreenUtils::getVisibleRect().size * .5f);
+    const float desiredWidth = (ScreenUtils::getVisibleRect().size.width - boardRect.size.width) * .25f;
+
+    cuePanel = new CuePanel({desiredWidth, boardRect.size.height * .7f});
 
     const cocos2d::Size panelSize = cocos2d::utils::getCascadeBoundingBox(cuePanel).size;
 
-    cuePanel->setPosition(ScreenUtils::left().x + panelSize.width * .5f, ScreenUtils::center().y);
+    cuePanel->setRotation(-90);
+
+    cuePanel->setPosition(ScreenUtils::left().x + desiredWidth, ScreenUtils::center().y);
     addChild(cuePanel);
 
-    cuePanel->setRotation(-90);
 }
 
 void GameLayer::createBallChartNode()
