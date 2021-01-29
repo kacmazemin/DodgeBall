@@ -9,8 +9,8 @@
 #include "Box2D/Dynamics/b2Fixture.h"
 #include "Box2D/Collision/Shapes/b2CircleShape.h"
 
-Ball::Ball(b2World &world, const cocos2d::Vec2& startPos, const bool isPlayerBall)
-: world(&world), startPos(startPos), isPlayerBall(isPlayerBall)
+Ball::Ball(b2World &world, const cocos2d::Vec2& startPos, const int id, const bool isPlayerBall)
+: world(&world), startPos(startPos), id(id), isPlayerBall(isPlayerBall)
 {
     this->init();
     autorelease();
@@ -37,20 +37,20 @@ void Ball::createBall(const bool isPlayerBall)
     fixtureDef.density = 5;
     fixtureDef.restitution = 0.7;
 
-    this->initWithFile("ball.png");
+    this->initWithFile(cocos2d::StringUtils::format("textures/balls/ball-%d.png", id));
 
     if (isPlayerBall)
     {
         type = PhysicsType::PLAYER_BALL;
         spriteBody->SetBullet(true);
         fixtureDef.filter.categoryBits = playerBallCategoryBit;
-        setColor(cocos2d::Color3B::WHITE);
+
     }
     else
     {
         type = PhysicsType::BALL;
         fixtureDef.filter.categoryBits = ballCategoryBit;
-        setColor(cocos2d::Color3B::MAGENTA);
+
     }
 
     spriteBody->CreateFixture(&fixtureDef);
@@ -66,6 +66,7 @@ void Ball::update(float dt)
     if (spriteBody && isVisible()) {
         setPositionX(spriteBody->GetPosition().x * PTM_RATIO);
         setPositionY(spriteBody->GetPosition().y * PTM_RATIO);
+        setRotation(spriteBody->GetAngle() * PTM_RATIO);
     }
 }
 

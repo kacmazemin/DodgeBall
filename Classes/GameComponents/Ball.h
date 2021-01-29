@@ -16,7 +16,7 @@ class b2Vec2;
 class Ball : public SpriteWithPhysics
 {
 public:
-    Ball(b2World& world, const cocos2d::Vec2& startPos, const bool isPlayer = false);
+    Ball(b2World& world, const cocos2d::Vec2& startPos, const int id, const bool isPlayer = false);
 
     virtual void update (float dt) override;
 
@@ -24,11 +24,17 @@ public:
 
     bool isAwake() const;
 
+    inline int getId() const
+    {
+        return id;
+    }
+
     virtual void hide() override;
     virtual void reset() override;
 
 
 private:
+    int id = 0;
     bool isPlayerBall = false;
     b2World* world = nullptr;
 
