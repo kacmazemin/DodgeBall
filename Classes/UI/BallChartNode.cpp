@@ -6,6 +6,13 @@
 #include <cocos/2d/CCSprite.h>
 #include "../Utils/ScreenUtils.h"
 
+namespace
+{
+    const std::string chartBgPath = "textures/chart/ball-chart-bg.png";
+    const std::string activeSocketSpritePath = "textures/chart/active-ball-slot.png";
+    const std::string inActiveSocketSpritePath = "textures/chart/passive-ball-slot.png";
+}
+
 BallChartNode::BallChartNode(const float height, const int ballCount)
 : height(height), ballCount(ballCount)
 {
@@ -20,7 +27,7 @@ BallChartNode::BallChartNode(const float height, const int ballCount)
 
 void BallChartNode::createBackground()
 {
-    background = cocos2d::Sprite::create("textures/ball-chart-bg.png");
+    background = cocos2d::Sprite::create(chartBgPath);
     ScreenUtils::fitH(background, height);
     addChild(background);
 
@@ -40,7 +47,7 @@ void BallChartNode::createBallSlots()
 
     for (int i = 0; i < ballCount ; i++)
     {
-        auto* ballSprite = cocos2d::Sprite::create("textures/chart-ball-slot.png");
+        auto* ballSprite = cocos2d::Sprite::create(inActiveSocketSpritePath);
         ScreenUtils::fitW(ballSprite, ballWidth);
         ballSprite->setPositionY(yPos);
         ballSprite->setPositionX(startX + (ballWidth * .5f) + (i * (space + ballWidth)));
@@ -83,4 +90,19 @@ void BallChartNode::playBallSortingAnimation()
         }));
     }
 
+}
+
+void BallChartNode::setCollected()
+{
+    balls[index]->setTexture(activeSocketSpritePath);
+    index++;
+}
+void BallChartNode::reset()
+{
+    index = 0;
+
+    for (const auto& socket : balls)
+    {
+        socket->setTexture(inActiveSocketSpritePath);
+    }
 }

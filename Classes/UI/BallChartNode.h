@@ -17,9 +17,13 @@ class BallChartNode final : public cocos2d::Node
 public:
     BallChartNode(const float height, const int ballCount);
 
+    void setCollected();
+    void reset();
+
 private:
     int ballCount = 0;
-    int ballInitialScale = 0;
+    float ballInitialScale = 0;
+    int index = 0;
     float height = 0;
 
     cocos2d::Sprite* background = nullptr;
