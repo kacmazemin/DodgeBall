@@ -29,7 +29,13 @@ void ContactListener::BeginContact(b2Contact *contact)
         else if (spriteA->getType() == PhysicsType::POCKET &&
                  spriteB->getType() == PhysicsType::BALL)
         {
-            dynamic_cast<Ball*>(spriteB)->hide();
+            const auto ball = dynamic_cast<Ball*>(spriteB);;
+            if(ball)
+            {
+                ball->hide();
+                cocos2d::Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("onBallHitPocket");
+            }
+
         }
         else if (spriteA->getType() == PhysicsType::POCKET &&
                  spriteB->getType() == PhysicsType::PLAYER_BALL && spriteB->isVisible())
