@@ -25,8 +25,6 @@ void Board::createTableSprite()
 {
     tableSprite = cocos2d::Sprite::create("table.png");
 
-    tableSprite->setOpacity(100);
-
     ScreenUtils::fitH(tableSprite, ScreenUtils::getVisibleRect().size.height * .8f);
 
     addChild(tableSprite);
