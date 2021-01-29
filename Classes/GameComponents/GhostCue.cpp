@@ -18,9 +18,6 @@ void GhostCue::createSprite()
 {
     sprite = cocos2d::Sprite::create("cue.png");
 
-    sprite->setOpacity(150);
-    sprite->setColor(cocos2d::Color3B::ORANGE);
-
     ScreenUtils::fitW(sprite, BALL_RADIUS * 22);
 
     sprite->setPositionX( sprite->getBoundingBox().size.width * .5f + (BALL_RADIUS * 3));
