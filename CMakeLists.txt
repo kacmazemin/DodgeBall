@@ -64,6 +64,7 @@ list(APPEND GAME_SOURCE
      Classes/UI/CuePanel.cpp
      Classes/UI/LoadingNode.cpp
      Classes/UI/BallChartNode.cpp
+     Classes/UI/RemainingShootNode.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
@@ -82,6 +83,7 @@ list(APPEND GAME_HEADER
      Classes/UI/CuePanel.h
      Classes/UI/LoadingNode.h
      Classes/UI/BallChartNode.h
+     Classes/UI/RemainingShootNode.h
      )
 
 if(ANDROID)
