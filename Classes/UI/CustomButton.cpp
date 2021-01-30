@@ -5,7 +5,7 @@
 #include "CustomButton.h"
 #include "../Utils/ScreenUtils.h"
 #include <cocos/ui/UIButton.h>
-#include "AudioEngine.h"
+#include "../AudioManager.h"
 
 CustomButton::CustomButton(const std::string& path, const cocos2d::Size& size)
 : imagePath(path), size(size)
@@ -66,6 +66,11 @@ void CustomButton::playClickEffect()
 {
     if(isSoundEffectEnable)
     {
-        cocos2d::experimental::AudioEngine::play2d("Sounds/basic-click.wav");
+        AudioManager::getInstance()->playButtonClick();
     }
+}
+
+void CustomButton::changeSoundActivity(const bool isEnable)
+{
+    isSoundEffectEnable = isEnable;
 }
