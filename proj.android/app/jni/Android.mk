@@ -23,7 +23,10 @@ LOCAL_SRC_FILES := $(LOCAL_PATH)/hellocpp/main.cpp \
                    $(LOCAL_PATH)/../../../Classes/UI/LoadingNode.cpp \
                    $(LOCAL_PATH)/../../../Classes/UI/BallChartNode.cpp \
                    $(LOCAL_PATH)/../../../Classes/UI/RemainingShootNode.cpp \
-                   $(LOCAL_PATH)/../../../Classes/UI/AnnouncerNode.cpp
+                   $(LOCAL_PATH)/../../../Classes/UI/AnnouncerNode.cpp \
+                   $(LOCAL_PATH)/../../../Classes/UI/CustomButton.cpp \
+                   $(LOCAL_PATH)/../../../Classes/AudioManager.cpp
+
 
 
 
