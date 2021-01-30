@@ -25,8 +25,8 @@
 #include "AppDelegate.h"
 #include "GameLayer.h"
 
-// #define USE_AUDIO_ENGINE 1
-// #define USE_SIMPLE_AUDIO_ENGINE 1
+ #define USE_AUDIO_ENGINE 1
+ #define USE_SIMPLE_AUDIO_ENGINE 0
 
 #if USE_AUDIO_ENGINE && USE_SIMPLE_AUDIO_ENGINE
 #error "Don't use AudioEngine and SimpleAudioEngine at the same time. Please just select one in your game!"
@@ -91,7 +91,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     }
 
     // turn on display FPS
-    director->setDisplayStats(true);
+//    director->setDisplayStats(true);
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0f / 60);

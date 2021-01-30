@@ -18,10 +18,13 @@
 #include "UI/RemainingShootNode.h"
 #include "UI/AnnouncerNode.h"
 #include "UI/CustomButton.h"
+#include "UI/PopupInGame.h"
+#include "MenuScene.h"
 
 namespace
 {
     constexpr int attemptCount = 5;
+    constexpr int popupZOrder = 10;
 }
 
 GameLayer::GameLayer()
@@ -56,6 +59,7 @@ bool GameLayer::init()
     createBalls();
     createCuePanel();
     createLoadingNode();
+    createMenuButton();
     createFireButton();
     createCueAndPlayerBall();
     createBallChartNode();
@@ -130,7 +134,7 @@ void GameLayer::createBalls()
         {
             id++;
             pos.x = startX - (BALL_RADIUS * 2) * i;
-            pos.y = startY - ((BALL_RADIUS * 2) * j);
+            pos.y = startY - (BALL_RADIUS * 2) * j;
 
             Ball* ball = new Ball(*physicsManager->GetWorld(), pos, id);
             addChild(ball);
@@ -208,7 +212,8 @@ void GameLayer::createLoadingNode()
     addChild(loadingNode);
 
     const cocos2d::Size loadingNodeSize = cocos2d::utils::getCascadeBoundingBox(loadingNode).size;
-    loadingNode->setPosition(ScreenUtils::leftTop() + loadingNodeSize * .5f);
+    loadingNode->setPositionX(cuePanel->getPositionX());
+    loadingNode->setPositionY(ScreenUtils::leftTop().y - loadingNodeSize.height * .5f);
 
     loadingNode->setVisible(false);
 
@@ -255,6 +260,20 @@ void GameLayer::onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event)
 void GameLayer::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event)
 {
 
+}
+
+void GameLayer::createMenuButton()
+{
+    menuButton = new CustomButton("textures/menu-button-in-game.png", ScreenUtils::getVisibleRect().size * .2f);
+
+    menuButton->setPosition(ScreenUtils::rightTop() - menuButton->getBoundingBox().size * .65f);
+
+    menuButton->setOnTap([=]()
+    {
+        showExitGamePopup();
+    });
+
+    addChild(menuButton);
 }
 
 void GameLayer::createFireButton()
@@ -358,6 +377,7 @@ void GameLayer::createCustomEventListener()
         {
             announcerNode->makeAnnounce(AnnounceType::Fail);
         }
+        checkMatchSituation();
     });
 
     onCueHitPlayerBall = cocos2d::EventListenerCustom::create("onCueHitPlayerBall",
@@ -378,6 +398,8 @@ void GameLayer::createCustomEventListener()
                 announcerNode->makeAnnounce(AnnounceType::Score);
             }
         }
+        score++;
+        checkMatchSituation();
     });
 
     _eventDispatcher->addEventListenerWithSceneGraphPriority(onPlayerBallAndPocketCollided, this);
@@ -408,5 +430,51 @@ void GameLayer::restartGame()
         remainingShootNode->reset();
     }
 
+    score = 0;
     resetCue();
+}
+
+void GameLayer::checkMatchSituation()
+{
+    if(score == gameBalls.size() || remainingAttempting == 0)
+    {
+        showInGamePopup();
+    }
+}
+
+void GameLayer::showInGamePopup()
+{
+    auto* popup = new PopupInGame(true);
+
+    popup->setYesOnTapFunction([=]()
+    {
+        restartGame();
+    });
+
+    popup->setNoOnTapFunction([=]()
+    {
+        auto scene = MenuScene::createScene();
+
+        cocos2d::Director::getInstance()->runWithScene(scene);
+    });
+
+    popup->setPosition(ScreenUtils::center());
+
+    addChild(popup, popupZOrder);
+}
+
+void GameLayer::showExitGamePopup()
+{
+    auto* popup = new PopupInGame(false);
+
+    popup->setYesOnTapFunction([=]()
+   {
+       auto scene = MenuScene::createScene();
+
+       cocos2d::Director::getInstance()->runWithScene(scene);
+   });
+
+    popup->setPosition(ScreenUtils::center());
+
+    addChild(popup, popupZOrder);
 }

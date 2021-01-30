@@ -39,6 +39,7 @@ private:
     bool isPlayerBallFail = false;
 
     int remainingAttempting = 5;
+    int score = 0;
     float previousAngle = 0;
 
     cocos2d::Sprite* background = nullptr;
@@ -59,7 +60,7 @@ private:
     RemainingShootNode* remainingShootNode = nullptr;
     AnnouncerNode* announcerNode = nullptr;
 
-    CustomButton* fireButton = nullptr;
+    CustomButton* menuButton = nullptr;
 
     cocos2d::EventListenerCustom* onPlayerBallAndPocketCollided = nullptr;
     cocos2d::EventListenerCustom* onCueHitPlayerBall = nullptr;
@@ -76,6 +77,7 @@ private:
     void createBoard();
     void createBalls();
     void createCueAndPlayerBall();
+    void createMenuButton();
     void createFireButton();
     void createCuePanel();
     void createBallChartNode();
@@ -94,6 +96,9 @@ private:
 
     void restartGame();
 
+    void checkMatchSituation();
+    void showInGamePopup();
+    void showExitGamePopup();
 
 };
 
