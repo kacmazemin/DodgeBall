@@ -9,6 +9,7 @@ LOCAL_MODULE_FILENAME := libMyGame
 LOCAL_SRC_FILES := $(LOCAL_PATH)/hellocpp/main.cpp \
                    $(LOCAL_PATH)/../../../Classes/AppDelegate.cpp \
                    $(LOCAL_PATH)/../../../Classes/GameLayer.cpp \
+                   $(LOCAL_PATH)/../../../Classes/SplashScreen.cpp \
                    $(LOCAL_PATH)/../../../Classes/Utils/GLES-Renderer.cpp \
                    $(LOCAL_PATH)/../../../Classes/Utils/ScreenUtils.cpp \
                    $(LOCAL_PATH)/../../../Classes/MenuScene.cpp \
@@ -25,6 +26,8 @@ LOCAL_SRC_FILES := $(LOCAL_PATH)/hellocpp/main.cpp \
                    $(LOCAL_PATH)/../../../Classes/UI/RemainingShootNode.cpp \
                    $(LOCAL_PATH)/../../../Classes/UI/AnnouncerNode.cpp \
                    $(LOCAL_PATH)/../../../Classes/UI/CustomButton.cpp \
+                   $(LOCAL_PATH)/../../../Classes/UI/ProfileBarNode.cpp \
+                   $(LOCAL_PATH)/../../../Classes/UI/Popup.cpp \
                    $(LOCAL_PATH)/../../../Classes/AudioManager.cpp
 
 

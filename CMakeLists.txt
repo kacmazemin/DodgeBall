@@ -49,6 +49,7 @@ endif()
 # add cross-platforms source files and header files 
 list(APPEND GAME_SOURCE
      Classes/AppDelegate.cpp
+     Classes/SplashScreen.cpp
      Classes/AudioManager.cpp
      Classes/Utils/GLES-Render.cpp
      Classes/Utils/ScreenUtils.cpp
@@ -68,10 +69,13 @@ list(APPEND GAME_SOURCE
      Classes/UI/RemainingShootNode.cpp
      Classes/UI/AnnouncerNode.cpp
      Classes/UI/CustomButton.cpp
+     Classes/UI/ProfileBarNode.cpp
+     Classes/UI/Popup.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
      Classes/AudioManager.h
+     Classes/SplashScreen.h
      Classes/Utils/GLES-Render.h
      Classes/Utils/ScreenUtils.h
      Classes/Physics/PhysicsManager.h
@@ -90,6 +94,8 @@ list(APPEND GAME_HEADER
      Classes/UI/RemainingShootNode.h
      Classes/UI/AnnouncerNode.h
      Classes/UI/CustomButton.h
+     Classes/UI/ProfileBarNode.h
+     Classes/UI/Popup.h
      )
 
 if(ANDROID)
