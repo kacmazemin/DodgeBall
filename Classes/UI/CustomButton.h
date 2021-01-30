@@ -23,6 +23,7 @@ public:
     virtual cocos2d::Rect getBoundingBox() const ;
 
     void changeSoundActivity(const bool isEnable);
+    void enableTintTo();
 
 private:
 

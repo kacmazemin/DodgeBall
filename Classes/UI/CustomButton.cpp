@@ -74,3 +74,13 @@ void CustomButton::changeSoundActivity(const bool isEnable)
 {
     isSoundEffectEnable = isEnable;
 }
+
+void CustomButton::enableTintTo()
+{
+    cocos2d::Action* tintToAction = cocos2d::RepeatForever::create(cocos2d::Sequence::create({
+             cocos2d::TintTo::create(.6f, cocos2d::Color3B::WHITE),
+             cocos2d::TintTo::create(.2f, cocos2d::Color3B::GRAY)
+     }));
+
+    mainButton->runAction(tintToAction);
+}

@@ -17,6 +17,7 @@
 #include "UI/BallChartNode.h"
 #include "UI/RemainingShootNode.h"
 #include "UI/AnnouncerNode.h"
+#include "UI/CustomButton.h"
 
 namespace
 {
@@ -55,7 +56,7 @@ bool GameLayer::init()
     createBalls();
     createCuePanel();
     createLoadingNode();
-    createButton();
+    createFireButton();
     createCueAndPlayerBall();
     createBallChartNode();
     createRemainingShootNode();
@@ -170,7 +171,7 @@ void GameLayer::createCuePanel()
 
     cuePanel->setRotation(-90);
 
-    cuePanel->setPosition(ScreenUtils::left().x + desiredWidth, ScreenUtils::center().y);
+    cuePanel->setPosition(ScreenUtils::left().x + desiredWidth, ScreenUtils::center().y + panelSize.height * .2f);
     addChild(cuePanel);
 
 }
@@ -207,7 +208,7 @@ void GameLayer::createLoadingNode()
     addChild(loadingNode);
 
     const cocos2d::Size loadingNodeSize = cocos2d::utils::getCascadeBoundingBox(loadingNode).size;
-    loadingNode->setPosition(ScreenUtils::rightTop() - loadingNodeSize * .5f);
+    loadingNode->setPosition(ScreenUtils::leftTop() + loadingNodeSize * .5f);
 
     loadingNode->setVisible(false);
 
@@ -256,85 +257,39 @@ void GameLayer::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event)
 
 }
 
-void GameLayer::createButton()
+void GameLayer::createFireButton()
 {
-    auto button = cocos2d::ui::Button::create("button-normal.png", "button-clicked.png", "button-clicked.png");
+    auto button = new CustomButton("textures/fire-button.png", ScreenUtils::getVisibleRect().size * .2f);
 
-    button->setTitleText("Button ");
+    if(cuePanel)
+    {
+        const auto cuePanelBB = cocos2d::utils::getCascadeBoundingBox(cuePanel);
+        button->setPositionX(cuePanel->getPositionX());
+        button->setPositionY(cuePanelBB.getMinY() - button->getBoundingBox().size.height * .6f);
 
-    button->setPosition(cocos2d::Vec2{ScreenUtils::leftTop().x + button->getBoundingBox().size.width * .5f, ScreenUtils::leftTop().y - button->getBoundingBox().size.height * .5f});
+    }
 
-    button->addTouchEventListener([&](Ref* sender, cocos2d::ui::Widget::TouchEventType type){
-        switch (type)
+    button->setOnTap([=](){
+        if(!isCueFired && !isPlayerBallFail && canManipulateCue)
         {
-            case cocos2d::ui::Widget::TouchEventType::BEGAN:
-                break;
-            case cocos2d::ui::Widget::TouchEventType::ENDED:
-                if(!isCueFired && !isPlayerBallFail && canManipulateCue)
-                {
-                    if(cuePanel)
-                    {
-                        cuePanel->changeActivity(false);
-                    }
+            if(cuePanel)
+            {
+                cuePanel->changeActivity(false);
+            }
 
-                    if(loadingNode)
-                    {
-                        loadingNode->setVisible(true);
-                    }
+            if(loadingNode)
+            {
+                loadingNode->setVisible(true);
+            }
 
-                    ghostCue->setVisible(false);
-                    cue->setVisible(true);
-                    cue->applyForce(cuePanel->getPowerFromBar());
-                }
-                break;
-            default:
-                break;
+            ghostCue->setVisible(false);
+            cue->setVisible(true);
+            cue->applyForce(cuePanel->getPowerFromBar());
         }
     });
+    button->enableTintTo();
 
-    this->addChild(button);
-
-    auto resetButton = cocos2d::ui::Button::create("button-normal.png", "button-clicked.png", "button-clicked.png");
-
-    resetButton->setTitleText("RESET");
-
-    resetButton->setPosition(cocos2d::Vec2{button->getPositionX(), button->getBoundingBox().getMinY() - button->getBoundingBox().size.height});
-
-    resetButton->addTouchEventListener([&](Ref* sender, cocos2d::ui::Widget::TouchEventType type){
-        switch (type)
-        {
-            case cocos2d::ui::Widget::TouchEventType::ENDED:
-                restartGame();
-                break;
-            default:
-                break;
-        }
-    });
-
-    this->addChild(resetButton);
-
-    auto panelButton = cocos2d::ui::Button::create("button-normal.png", "button-clicked.png", "button-clicked.png");
-
-    panelButton->setTitleText("A/S");
-
-    panelButton->setPosition(cocos2d::Vec2{button->getPositionX(), resetButton->getBoundingBox().getMinY() - button->getBoundingBox().size.height});
-
-    panelButton->addTouchEventListener([&](Ref* sender, cocos2d::ui::Widget::TouchEventType type){
-        switch (type)
-        {
-            case cocos2d::ui::Widget::TouchEventType::ENDED:
-
-                if(announcerNode)
-                {
-                    announcerNode->makeAnnounce(AnnounceType::EndGame);
-                }
-                break;
-            default:
-                break;
-        }
-    });
-
-    this->addChild(panelButton);
+    addChild(button);
 }
 
 void GameLayer::resetCue()
@@ -343,7 +298,8 @@ void GameLayer::resetCue()
     {
         ghostCue->setPosition(playerBall->getPosition());
         ghostCue->setVisible(true);
-        cue->applyNewTransform(b2Vec2(ghostCue->getPos().x / PTM_RATIO, ghostCue->getPos().y / PTM_RATIO), CC_DEGREES_TO_RADIANS(-ghostCue->getRotation()));
+        cue->applyNewTransform(b2Vec2(ghostCue->getPos().x / PTM_RATIO, ghostCue->getPos().y / PTM_RATIO),
+                CC_DEGREES_TO_RADIANS(-ghostCue->getRotation()));
         cue->reset();
         cue->setVisible(false);
         isCueFired = false;

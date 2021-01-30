@@ -17,6 +17,7 @@ class LoadingNode;
 class BallChartNode;
 class RemainingShootNode;
 class AnnouncerNode;
+class CustomButton;
 
 class GameLayer : public cocos2d::Scene
 {
@@ -58,6 +59,8 @@ private:
     RemainingShootNode* remainingShootNode = nullptr;
     AnnouncerNode* announcerNode = nullptr;
 
+    CustomButton* fireButton = nullptr;
+
     cocos2d::EventListenerCustom* onPlayerBallAndPocketCollided = nullptr;
     cocos2d::EventListenerCustom* onCueHitPlayerBall = nullptr;
     cocos2d::EventListenerCustom* onBallHitPocket = nullptr;
@@ -73,7 +76,7 @@ private:
     void createBoard();
     void createBalls();
     void createCueAndPlayerBall();
-    void createButton();
+    void createFireButton();
     void createCuePanel();
     void createBallChartNode();
     void createRemainingShootNode();
