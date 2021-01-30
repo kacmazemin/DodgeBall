@@ -71,6 +71,7 @@ list(APPEND GAME_SOURCE
      Classes/UI/CustomButton.cpp
      Classes/UI/ProfileBarNode.cpp
      Classes/UI/Popup.cpp
+     Classes/UI/PopupInGame.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
@@ -96,6 +97,7 @@ list(APPEND GAME_HEADER
      Classes/UI/CustomButton.h
      Classes/UI/ProfileBarNode.h
      Classes/UI/Popup.h
+     Classes/UI/PopupInGame.h
      )
 
 if(ANDROID)
