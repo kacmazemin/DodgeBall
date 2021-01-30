@@ -24,11 +24,12 @@ public:
 
     void changeSoundActivity(const bool isEnable);
     void enableTintTo();
+    void addLabel(const std::string& string, const float heightRatio);
 
 private:
 
     bool isSoundEffectEnable = true;
-    float initialScale = .0f;
+
     std::string imagePath = "";
     cocos2d::Size size = cocos2d::Size::ZERO;
 
@@ -39,9 +40,6 @@ private:
 
     void createButton();
     void playClickEffect();
-
-
-
 };
 
 

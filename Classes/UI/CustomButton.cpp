@@ -18,9 +18,8 @@ CustomButton::CustomButton(const std::string& path, const cocos2d::Size& size)
 
 void CustomButton::createButton()
 {
+    //this node created to get bounding box of button.
     initialNode = cocos2d::Node::create();
-    initialNode->setScale(1.f);
-    initialScale = initialNode->getScale();
 
     addChild(initialNode);
 
@@ -83,4 +82,17 @@ void CustomButton::enableTintTo()
      }));
 
     mainButton->runAction(tintToAction);
+}
+
+void CustomButton::addLabel(const std::string& string, const float heightRatio)
+{
+    if(mainButton)
+    {
+        auto* label = cocos2d::Label::createWithTTF(string,
+                "fonts/bowly.ttf",  mainButton->getBoundingBox().size.height * heightRatio);
+        label->setTextColor(cocos2d::Color4B::WHITE);
+        label->enableOutline(cocos2d::Color4B::BLACK, 2);
+
+        mainButton->setTitleLabel(label);
+    }
 }
