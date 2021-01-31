@@ -51,6 +51,7 @@ list(APPEND GAME_SOURCE
      Classes/AppDelegate.cpp
      Classes/SplashScreen.cpp
      Classes/AudioManager.cpp
+     Classes/ShaderManager.cpp
      Classes/Utils/GLES-Render.cpp
      Classes/Utils/ScreenUtils.cpp
      Classes/Physics/PhysicsManager.cpp
@@ -69,13 +70,14 @@ list(APPEND GAME_SOURCE
      Classes/UI/RemainingShootNode.cpp
      Classes/UI/AnnouncerNode.cpp
      Classes/UI/CustomButton.cpp
-        Classes/UI/AudioControlButton.cpp
+     Classes/UI/AudioControlButton.cpp
      Classes/UI/Popup.cpp
      Classes/UI/PopupInGame.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
      Classes/AudioManager.h
+     Classes/ShaderManager.h
      Classes/SplashScreen.h
      Classes/Utils/GLES-Render.h
      Classes/Utils/ScreenUtils.h
@@ -95,7 +97,7 @@ list(APPEND GAME_HEADER
      Classes/UI/RemainingShootNode.h
      Classes/UI/AnnouncerNode.h
      Classes/UI/CustomButton.h
-        Classes/UI/AudioControlButton.h
+     Classes/UI/AudioControlButton.h
      Classes/UI/Popup.h
      Classes/UI/PopupInGame.h
      )
