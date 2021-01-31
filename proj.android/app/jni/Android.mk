@@ -29,6 +29,7 @@ LOCAL_SRC_FILES := $(LOCAL_PATH)/hellocpp/main.cpp \
                    $(LOCAL_PATH)/../../../Classes/UI/AudioControlButton.cpp \
                    $(LOCAL_PATH)/../../../Classes/UI/Popup.cpp \
                    $(LOCAL_PATH)/../../../Classes/UI/PopupInGame.cpp \
+                   $(LOCAL_PATH)/../../../Classes/UI/StarNode.cpp \
                    $(LOCAL_PATH)/../../../Classes/AudioManager.cpp \
                    $(LOCAL_PATH)/../../../Classes/ShaderManager.cpp
 

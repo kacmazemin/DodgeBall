@@ -73,6 +73,7 @@ list(APPEND GAME_SOURCE
      Classes/UI/AudioControlButton.cpp
      Classes/UI/Popup.cpp
      Classes/UI/PopupInGame.cpp
+     Classes/UI/StarNode.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
@@ -100,6 +101,7 @@ list(APPEND GAME_HEADER
      Classes/UI/AudioControlButton.h
      Classes/UI/Popup.h
      Classes/UI/PopupInGame.h
+     Classes/UI/StarNode.h
      )
 
 if(ANDROID)
