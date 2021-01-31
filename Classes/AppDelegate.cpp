@@ -24,6 +24,7 @@
 
 #include "AppDelegate.h"
 #include "GameLayer.h"
+#include "SplashScreen.h"
 
  #define USE_AUDIO_ENGINE 1
  #define USE_SIMPLE_AUDIO_ENGINE 0
@@ -34,6 +35,8 @@
 
 #if USE_AUDIO_ENGINE
 #include "audio/include/AudioEngine.h"
+#include "AudioManager.h"
+
 using namespace cocos2d::experimental;
 #elif USE_SIMPLE_AUDIO_ENGINE
 #include "audio/include/SimpleAudioEngine.h"
@@ -118,7 +121,11 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
 
     // create a scene. it's an autorelease object
-    auto scene = GameLayer::createScene();
+
+    AudioManager::getInstance()->loadAssets();
+
+
+    auto scene = SplashScreen::createScene();
 
     // run
     director->runWithScene(scene);
