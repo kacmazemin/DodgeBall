@@ -26,9 +26,15 @@ public:
     void enableTintTo();
     void addLabel(const std::string& string, const float heightRatio);
 
+    void enableLightShader();
+
+    void update(float dt);
+
 private:
+    float lightTime = 0;
 
     bool isSoundEffectEnable = true;
+    bool isLightShaderActive = false;
 
     std::string imagePath = "";
     cocos2d::Size size = cocos2d::Size::ZERO;

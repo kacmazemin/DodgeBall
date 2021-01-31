@@ -6,6 +6,7 @@
 #include "../Utils/ScreenUtils.h"
 #include <cocos/ui/UIButton.h>
 #include "../AudioManager.h"
+#include "../ShaderManager.h"
 
 CustomButton::CustomButton(const std::string& path, const cocos2d::Size& size)
 : imagePath(path), size(size)
@@ -14,6 +15,8 @@ CustomButton::CustomButton(const std::string& path, const cocos2d::Size& size)
     autorelease();
 
     createButton();
+    scheduleUpdate();
+//    enableLightShader();
 }
 
 void CustomButton::createButton()
@@ -55,7 +58,6 @@ void CustomButton::setOnTap(const std::function<void()>& func)
     function = func;
 }
 
-
 cocos2d::Rect CustomButton::getBoundingBox() const
 {
     return cocos2d::utils::getCascadeBoundingBox(initialNode);
@@ -94,5 +96,43 @@ void CustomButton::addLabel(const std::string& string, const float heightRatio)
         label->enableOutline(cocos2d::Color4B::BLACK, 2);
 
         mainButton->setTitleLabel(label);
+    }
+}
+
+void CustomButton::enableLightShader()
+{
+    isLightShaderActive = true;
+
+    auto glProgramState = cocos2d::GLProgramState::getOrCreateWithGLProgram(
+            ShaderManager::getInstance()->getOrCreateGLProgram("lightshader"));
+
+    lightTime = 0;
+
+    glProgramState->setUniformFloat("u_ctime", 0);
+    glProgramState->setUniformVec4("u_color", cocos2d::Vec4(1, 1, 1, .6f));
+    glProgramState->setUniformFloat("u_gtime", 3);
+    glProgramState->setUniformInt("way", 1);
+
+    mainButton->getVirtualRenderer()->setGLProgramState(glProgramState);
+    mainButton->getVirtualRenderer()->getGLProgram()->use();
+
+}
+
+void CustomButton::update(float dt)
+{
+    if(!isLightShaderActive)
+    {
+        return;
+    }
+
+    lightTime += .024;
+
+    if(lightTime > 5)
+    {
+            lightTime = 0;
+    }
+    if(mainButton)
+    {
+        mainButton->getVirtualRenderer()->getGLProgramState()->setUniformFloat("u_ctime", lightTime);
     }
 }
