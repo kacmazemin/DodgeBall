@@ -16,7 +16,6 @@ CustomButton::CustomButton(const std::string& path, const cocos2d::Size& size)
 
     createButton();
     scheduleUpdate();
-//    enableLightShader();
 }
 
 void CustomButton::createButton()

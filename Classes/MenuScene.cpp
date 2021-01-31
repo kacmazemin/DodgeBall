@@ -16,7 +16,6 @@ namespace
     const std::string layoutLinePath = "textures/main-menu/menu-layout-line.png";
     const std::string playButtonPath = "textures/main-menu/play-button.png";
     const std::string exitButtonPath = "textures/main-menu/exit-button.png";
-
 }
 
 cocos2d::Scene *MenuScene::createScene()

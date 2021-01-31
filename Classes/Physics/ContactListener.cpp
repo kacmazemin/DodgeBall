@@ -3,7 +3,8 @@
 //
 
 #include <cocos/base/CCEventCustom.h>
-#include <GameComponents/Ball.h>
+#include "../GameComponents/Ball.h"
+#include "../GameComponents/Pocket.h"
 #include "ContactListener.h"
 #include "Physics/SpriteWithPhysics.h"
 #include "SimpleAudioEngine.h"
@@ -29,12 +30,12 @@ void ContactListener::BeginContact(b2Contact *contact)
         else if (spriteA->getType() == PhysicsType::POCKET &&
                  spriteB->getType() == PhysicsType::BALL)
         {
-            const auto ball = dynamic_cast<Ball*>(spriteB);;
-            if(ball)
+            if(const auto ball = dynamic_cast<Ball*>(spriteB))
             {
                 ball->hide();
                 cocos2d::Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("onBallHitPocket");
             }
+
 
         }
         else if (spriteA->getType() == PhysicsType::POCKET &&

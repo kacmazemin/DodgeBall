@@ -217,10 +217,9 @@ void GameLayer::createLoadingNode()
 
     const cocos2d::Size loadingNodeSize = cocos2d::utils::getCascadeBoundingBox(loadingNode).size;
     loadingNode->setPositionX(cuePanel->getPositionX());
-    loadingNode->setPositionY(ScreenUtils::leftTop().y - loadingNodeSize.height * .5f);
+    loadingNode->setPositionY(ScreenUtils::leftTop().y - loadingNodeSize.height * .65f);
 
     loadingNode->setVisible(false);
-
 }
 
 void GameLayer::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags)
