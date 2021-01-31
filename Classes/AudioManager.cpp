@@ -31,7 +31,6 @@ AudioManager* AudioManager::getInstance() {
 
 void AudioManager::init()
 {
-    //todo preload
 
 }
 
@@ -102,5 +101,9 @@ void AudioManager::mute(const bool isMute)
     {
         isMuted = false;
         cocos2d::experimental::AudioEngine::resumeAll();
+
+        cocos2d::experimental::AudioEngine::stop(menuMusicId);
+        menuMusicId = cocos2d::experimental::AudioEngine::play2d("Sounds/menu-music.wav", true, .6f);
+
     }
 }
