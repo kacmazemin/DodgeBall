@@ -20,6 +20,7 @@
 #include "UI/CustomButton.h"
 #include "UI/PopupInGame.h"
 #include "MenuScene.h"
+#include "AudioManager.h"
 
 namespace
 {
@@ -51,9 +52,10 @@ bool GameLayer::init()
         return false;
     }
 
+    physicsManager = std::make_unique<PhysicsManager>();
+
     createTouchListener();
 
-    physicsManager = std::make_unique<PhysicsManager>();
     createBackground();
     createBoard();
     createBalls();
@@ -68,6 +70,8 @@ bool GameLayer::init()
 
     createCustomEventListener();
     scheduleUpdate();
+
+    AudioManager::getInstance()->playGamePlayMusic();
 
     return true;
 }
@@ -208,7 +212,7 @@ void GameLayer::createAnnouncerNode()
 
 void GameLayer::createLoadingNode()
 {
-    loadingNode = new LoadingNode(ScreenUtils::getVisibleRect().size * .2f);
+    loadingNode = new LoadingNode(ScreenUtils::getVisibleRect().size * .15f);
     addChild(loadingNode);
 
     const cocos2d::Size loadingNodeSize = cocos2d::utils::getCascadeBoundingBox(loadingNode).size;
