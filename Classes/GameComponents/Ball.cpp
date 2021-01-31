@@ -44,13 +44,11 @@ void Ball::createBall(const bool isPlayerBall)
         type = PhysicsType::PLAYER_BALL;
         spriteBody->SetBullet(true);
         fixtureDef.filter.categoryBits = playerBallCategoryBit;
-
     }
     else
     {
         type = PhysicsType::BALL;
         fixtureDef.filter.categoryBits = ballCategoryBit;
-
     }
 
     spriteBody->CreateFixture(&fixtureDef);
@@ -115,7 +113,6 @@ void Ball::reset()
             bodyFixture->SetFilterData(filter);
         }
     }
-
     setBodyPosition(startPos);
     SpriteWithPhysics::reset();
 }

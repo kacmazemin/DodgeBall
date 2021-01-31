@@ -16,6 +16,8 @@ public:
     void playButtonClick();
     void playGamePlayMusic();
     void playMenuMusic();
+    void playBallHitBallEffect();
+    void playFailEffect();
 
     void mute(const bool isMute);
     inline bool getIsMuted()

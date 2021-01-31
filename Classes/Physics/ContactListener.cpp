@@ -10,6 +10,7 @@
 #include "SimpleAudioEngine.h"
 #include "CCDirector.h"
 #include "CCEventDispatcher.h"
+#include "AudioManager.h"
 
 void ContactListener::BeginContact(b2Contact *contact)
 {
@@ -22,9 +23,9 @@ void ContactListener::BeginContact(b2Contact *contact)
     if (spriteA && spriteB) {
         if (spriteA->getType() == PhysicsType::BALL &&
             spriteB->getType() == PhysicsType::BALL) {
-            if (spriteA->getMagnitude() > 5 && spriteA->isVisible() || spriteB->getMagnitude() > 5 && spriteB->isVisible())
+            if (spriteA->getMagnitude() > 2 && spriteA->isVisible() || spriteB->getMagnitude() > 2 && spriteB->isVisible())
             {
-                CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("Sounds/cue-hit-ball.wav");
+                AudioManager::getInstance()->playBallHitBallEffect();
             }
         }
         else if (spriteA->getType() == PhysicsType::POCKET &&
@@ -36,14 +37,18 @@ void ContactListener::BeginContact(b2Contact *contact)
                 cocos2d::Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("onBallHitPocket");
             }
 
-
         }
         else if (spriteA->getType() == PhysicsType::POCKET &&
                  spriteB->getType() == PhysicsType::PLAYER_BALL && spriteB->isVisible())
         {
             spriteB->hide();
-
+            AudioManager::getInstance()->playFailEffect();
             cocos2d::Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("onPlayerBallAndPocketCollided");
+        }
+        else if (spriteA->getType() == PhysicsType::BALL &&
+                 spriteB->getType() == PhysicsType::PLAYER_BALL && spriteB->isVisible())
+        {
+            AudioManager::getInstance()->playBallHitBallEffect();
         }
     }
 }

@@ -7,12 +7,15 @@
 
 namespace
 {
+    //todo create new map and enum class then use only one function to call sound effects.
     const std::vector<std::string> assetPath{
             "Sounds/basic-click.wav",
             "Sounds/splash.wav",
             "Sounds/cue-hit-ball.wav",
             "Sounds/menu-music.wav",
-            "Sounds/gameplay.wav"
+            "Sounds/gameplay.wav",
+            "Sounds/ball-hit-ball.wav",
+            "Sounds/fail.wav"
             };
 }
 
@@ -106,4 +109,14 @@ void AudioManager::mute(const bool isMute)
         menuMusicId = cocos2d::experimental::AudioEngine::play2d("Sounds/menu-music.wav", true, .6f);
 
     }
+}
+
+void AudioManager::playBallHitBallEffect()
+{
+    cocos2d::experimental::AudioEngine::play2d("Sounds/ball-hit-ball.wav", false, .6f);
+}
+
+void AudioManager::playFailEffect()
+{
+    cocos2d::experimental::AudioEngine::play2d("Sounds/fail.wav", false, .6f);
 }
