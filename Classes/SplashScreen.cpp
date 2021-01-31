@@ -26,13 +26,13 @@ bool SplashScreen::init()
         return false;
     }
 
-    createSprites();
+    createLogo();
 
 
     return true;
 }
 
-void SplashScreen::createSprites()
+void SplashScreen::createLogo()
 {
     auto* logo = cocos2d::Sprite::create(logoPath);
     ScreenUtils::fitH(logo,ScreenUtils::getVisibleRect().size.height * .35f);

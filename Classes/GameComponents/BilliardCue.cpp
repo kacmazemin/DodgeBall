@@ -72,7 +72,7 @@ void BilliardCue::applyNewTransform(const b2Vec2& position, const float angle)
     if(spriteBody)
     {
         spriteBody->SetAngularVelocity(0);
-        spriteBody->SetTransform( position, angle );
+        spriteBody->SetTransform(position, angle);
     }
 }
 

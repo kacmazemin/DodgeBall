@@ -28,7 +28,6 @@ void Board::createTableSprite()
     ScreenUtils::fitH(tableSprite, ScreenUtils::getVisibleRect().size.height * .8f);
 
     addChild(tableSprite);
-
 }
 
 void Board::createPhysicEdges()

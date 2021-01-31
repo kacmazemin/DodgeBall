@@ -2,8 +2,8 @@
 // Created by emin on 23.01.2021.
 //
 
-#ifndef _PHYSICSMANAGER_H
-#define _PHYSICSMANAGER_H
+#ifndef PHYSICSMANAGER_H
+#define PHYSICSMANAGER_H
 
 #include "Utils/GLES-Render.h"
 #include "Box2D/Box2D.h"
@@ -33,4 +33,4 @@ private:
 };
 
 
-#endif //_PHYSICSMANAGER_H
+#endif //PHYSICSMANAGER_H

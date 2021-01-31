@@ -15,7 +15,6 @@ namespace
     //do not use 0x0001 since the default category for a fixture is 1
     constexpr uint16_t playerBallCategoryBit = 0x0100;
     constexpr uint16_t ballCategoryBit = 0x0002;
-
 }
 
 enum class PhysicsType

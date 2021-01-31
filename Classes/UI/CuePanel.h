@@ -28,6 +28,7 @@ public:
     float getPowerFromBar() const;
 
     virtual void update(float dt) override;
+
 private:
     float percent = 0;
     bool isHitMax = false;

@@ -18,9 +18,7 @@ public:
     CREATE_FUNC(SplashScreen);
 
 private:
-    void preloadSounds();
-
-    void createSprites();
+    void createLogo();
 };
 
 
