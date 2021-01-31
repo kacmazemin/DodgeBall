@@ -27,13 +27,13 @@ PhysicsManager::PhysicsManager()
 
 PhysicsManager::~PhysicsManager()
 {
-    b2Body* body = world->GetBodyList();
-
-    for (int i = 0; i < world->GetBodyCount(); i++)
-    {
-        b2Body* existBody = &body[i];
-        if (existBody) world->DestroyBody(existBody);
-    }
+//    b2Body* body = world->GetBodyList();
+//
+//    for (int i = 0; i < world->GetBodyCount(); i++)
+//    {
+//        b2Body* existBody = &body[i];
+//        if (existBody) world->DestroyBody(existBody);
+//    }
 
     delete world;
     world = nullptr;
