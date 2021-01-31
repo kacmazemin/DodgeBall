@@ -127,7 +127,6 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     auto scene = SplashScreen::createScene();
 
-    // run
     director->runWithScene(scene);
 
     return true;

@@ -14,8 +14,24 @@ public:
 
     void playSoundEffect(const std::string &path, const float volume, const bool isLoop = false);
     void playButtonClick();
+    void playGamePlayMusic();
+    void playMenuMusic();
+
+    void mute(const bool isMute);
+    inline bool getIsMuted()
+    {
+        return isMuted;
+    };
+
+    void loadAssets();
+
 
 private:
+
+    int menuMusicId = 0;
+    int gameMusicId = 0;
+
+    bool isMuted = false;
     void init();
 };
 

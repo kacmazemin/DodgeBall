@@ -5,6 +5,17 @@
 #include "AudioManager.h"
 #include "AudioEngine.h"
 
+namespace
+{
+    const std::vector<std::string> assetPath{
+            "Sounds/basic-click.wav",
+            "Sounds/splash.wav",
+            "Sounds/cue-hit-ball.wav",
+            "Sounds/menu-music.wav",
+            "Sounds/gameplay.wav"
+            };
+}
+
 static AudioManager* sharedInstance = nullptr;
 
 AudioManager* AudioManager::getInstance() {
@@ -21,14 +32,75 @@ AudioManager* AudioManager::getInstance() {
 void AudioManager::init()
 {
     //todo preload
+
 }
 
 void AudioManager::playSoundEffect(const std::string &path, const float volume, const bool isLoop)
 {
-    cocos2d::experimental::AudioEngine::play2d(path, isLoop, volume);
+    if(!isMuted)
+    {
+        cocos2d::experimental::AudioEngine::play2d(path, isLoop, volume);
+    }
 }
 
 void AudioManager::playButtonClick()
 {
-    cocos2d::experimental::AudioEngine::play2d("Sounds/basic-click.wav", false, .6f);
+    if(!isMuted)
+    {
+        cocos2d::experimental::AudioEngine::play2d("Sounds/basic-click.wav", false, .6f);
+    }
+}
+
+void AudioManager::playGamePlayMusic()
+{
+    cocos2d::experimental::AudioEngine::stop(menuMusicId);
+
+    if(!isMuted)
+    {
+        gameMusicId = cocos2d::experimental::AudioEngine::play2d("Sounds/gameplay.wav",true,.6f);
+    }
+}
+
+
+void AudioManager::playMenuMusic()
+{
+    cocos2d::experimental::AudioEngine::stop(gameMusicId);
+
+    if(!isMuted)
+    {
+        menuMusicId = cocos2d::experimental::AudioEngine::play2d("Sounds/menu-music.wav", true, .6f);
+    }
+}
+
+void AudioManager::loadAssets()
+{
+    for (const auto& path : assetPath)
+    {
+        cocos2d::experimental::AudioEngine::preload(path, [=](bool isSuccess)
+        {
+            if(isSuccess)
+            {
+                CCLOG("Sound preload is successful %s", path.c_str());
+
+            }
+            else
+            {
+                CCLOG("FAIL %s", path.c_str());
+            }
+        });
+    }
+}
+
+void AudioManager::mute(const bool isMute)
+{
+    if(isMute)
+    {
+        isMuted = true;
+        cocos2d::experimental::AudioEngine::stopAll();
+    }
+    else
+    {
+        isMuted = false;
+        cocos2d::experimental::AudioEngine::resumeAll();
+    }
 }
