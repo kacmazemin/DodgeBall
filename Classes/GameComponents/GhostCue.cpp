@@ -16,7 +16,7 @@ GhostCue::GhostCue()
 
 void GhostCue::createSprite()
 {
-    sprite = cocos2d::Sprite::create("cue.png");
+    sprite = cocos2d::Sprite::create("textures/cue.png");
 
     ScreenUtils::fitW(sprite, BALL_RADIUS * 22);
 

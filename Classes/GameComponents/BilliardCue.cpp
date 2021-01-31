@@ -48,7 +48,7 @@ void BilliardCue::createCue()
     spriteBody->CreateFixture(&fixtureDef);
     spriteBody->SetUserData(this);
 
-    this->initWithFile("cue.png");
+    this->initWithFile("textures/cue.png");
 
     setBodyPosition(startPos);
 

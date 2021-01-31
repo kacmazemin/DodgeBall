@@ -23,7 +23,7 @@ Board::Board(b2World &world) : world(&world)
 
 void Board::createTableSprite()
 {
-    tableSprite = cocos2d::Sprite::create("table.png");
+    tableSprite = cocos2d::Sprite::create("textures/table.png");
 
     ScreenUtils::fitH(tableSprite, ScreenUtils::getVisibleRect().size.height * .8f);
 
