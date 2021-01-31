@@ -69,7 +69,7 @@ list(APPEND GAME_SOURCE
      Classes/UI/RemainingShootNode.cpp
      Classes/UI/AnnouncerNode.cpp
      Classes/UI/CustomButton.cpp
-     Classes/UI/ProfileBarNode.cpp
+        Classes/UI/AudioControlButton.cpp
      Classes/UI/Popup.cpp
      Classes/UI/PopupInGame.cpp
      )
@@ -95,7 +95,7 @@ list(APPEND GAME_HEADER
      Classes/UI/RemainingShootNode.h
      Classes/UI/AnnouncerNode.h
      Classes/UI/CustomButton.h
-     Classes/UI/ProfileBarNode.h
+        Classes/UI/AudioControlButton.h
      Classes/UI/Popup.h
      Classes/UI/PopupInGame.h
      )
