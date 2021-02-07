@@ -41,7 +41,7 @@ android {
         }
 
         ndk {
-            abiFilters = ["armeabi-v7a", "arm64-v8a", "x86_64", "x86"]
+            abiFilters = ["x86", "armeabi-v7a"]
             abiFilters.addAll(PROP_APP_ABI.split(':').collect{it as String})
         }
     }
