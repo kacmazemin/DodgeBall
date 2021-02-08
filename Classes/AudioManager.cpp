@@ -93,6 +93,30 @@ void AudioManager::loadAssets()
     }
 }
 
+void AudioManager::playBallHitBallEffect()
+{
+    if(!isMuted)
+    {
+        cocos2d::experimental::AudioEngine::play2d("Sounds/ball-hit-ball.wav", false, .6f);
+    }
+}
+
+void AudioManager::playFailEffect()
+{
+    if(!isMuted)
+    {
+        cocos2d::experimental::AudioEngine::play2d("Sounds/fail.wav", false, .6f);
+    }
+}
+
+void AudioManager::playCueHitBall()
+{
+    if(!isMuted)
+    {
+        cocos2d::experimental::AudioEngine::play2d("Sounds/cue-hit-ball.wav", false, .6f);
+    }
+}
+
 void AudioManager::mute(const bool isMute)
 {
     if(isMute)
@@ -109,14 +133,4 @@ void AudioManager::mute(const bool isMute)
         menuMusicId = cocos2d::experimental::AudioEngine::play2d("Sounds/menu-music.wav", true, .6f);
 
     }
-}
-
-void AudioManager::playBallHitBallEffect()
-{
-    cocos2d::experimental::AudioEngine::play2d("Sounds/ball-hit-ball.wav", false, .6f);
-}
-
-void AudioManager::playFailEffect()
-{
-    cocos2d::experimental::AudioEngine::play2d("Sounds/fail.wav", false, .6f);
 }
