@@ -100,7 +100,6 @@ void CustomButton::addLabel(const std::string& string, const float heightRatio)
 
 void CustomButton::enableLightShader()
 {
-    isLightShaderActive = true;
 
     auto glProgramState = cocos2d::GLProgramState::getOrCreateWithGLProgram(
             ShaderManager::getInstance()->getOrCreateGLProgram("lightshader"));
@@ -114,6 +113,9 @@ void CustomButton::enableLightShader()
 
     mainButton->getVirtualRenderer()->setGLProgramState(glProgramState);
     mainButton->getVirtualRenderer()->getGLProgram()->use();
+
+    isLightShaderActive = true;
+
 
 }
 

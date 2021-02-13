@@ -77,7 +77,7 @@ void MenuScene::createLayoutLines()
 
 void MenuScene::createPlayButton()
 {
-    auto* playButton = new CustomButton(playButtonPath, layout->getBoundingBox().size * .5f);
+    playButton = new CustomButton(playButtonPath, layout->getBoundingBox().size * .5f);
     playButton->setPositionX(layout->getBoundingBox().getMinX() + playButton->getBoundingBox().size.width);
 
     playButton->setOnTap([=]()
@@ -86,19 +86,23 @@ void MenuScene::createPlayButton()
          cocos2d::Director::getInstance()->runWithScene(scene);
      });
 
+    playButton->enableLightShader();
+
     initialNode->addChild(playButton);
 }
 
 void MenuScene::createExitButton()
 {
 
-    auto* exitButton = new CustomButton(exitButtonPath, layout->getBoundingBox().size * .5f);
+    exitButton = new CustomButton(exitButtonPath, layout->getBoundingBox().size * .5f);
     exitButton->setPositionX(layout->getBoundingBox().getMaxX() - exitButton->getBoundingBox().size.width);
 
     exitButton->setOnTap([=]()
      {
          cocos2d::Director::getInstance()->end();
      });
+
+    exitButton->enableLightShader();
 
     initialNode->addChild(exitButton);
 }

@@ -124,7 +124,6 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     AudioManager::getInstance()->loadAssets();
 
-
     auto scene = SplashScreen::createScene();
 
     director->runWithScene(scene);

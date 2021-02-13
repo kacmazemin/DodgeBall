@@ -11,7 +11,6 @@
 #include "GameComponents/GhostCue.h"
 #include "GameComponents/Pocket.h"
 #include "GameComponents/Board.h"
-#include <ui/UIButton.h>
 #include "UI/CuePanel.h"
 #include "UI/LoadingNode.h"
 #include "UI/BallChartNode.h"
@@ -247,8 +246,6 @@ bool GameLayer::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event *event)
 
 void GameLayer::onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event)
 {
-    cocos2d::Vec2 currentLocation = touch->getLocation();
-
     if(canManipulateCue && ghostCue && !isPlayerBallFail)
     {
         auto diff = ghostCue->getPosition() - touch->getLocation();
@@ -256,7 +253,9 @@ void GameLayer::onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event)
         ghostCue->setRotation(ghostCue->getRotation() + (angle - previousAngle));
         previousAngle = angle;
 
-        cue->applyNewTransform(b2Vec2(ghostCue->getPos().x / PTM_RATIO, ghostCue->getPos().y / PTM_RATIO), CC_DEGREES_TO_RADIANS(-ghostCue->getRotation()));
+        cue->applyNewTransform(
+                b2Vec2(ghostCue->getPos().x / PTM_RATIO, ghostCue->getPos().y / PTM_RATIO),
+                                          CC_DEGREES_TO_RADIANS(-ghostCue->getRotation()));
     }
 }
 
